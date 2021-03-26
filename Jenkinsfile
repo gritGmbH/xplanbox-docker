@@ -14,6 +14,7 @@ pipeline {
     image05 = 'xplan-services-docker'
     image06 = 'xplan-services-inspireplu-docker'
     image07 = 'xplan-validator-web-docker'
+    DEE_REPO = credentials('dee.nexus.developer')
   }
   agent any
   stages {
@@ -31,13 +32,16 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          dockerImage01 = docker.build( "${repository}/${image01}:$dockerTagLong", "--pull --build-arg BUILD_VERSION=${gitBranchShort} --build-arg BUILD_COMMIT=${GIT_COMMIT} ${image01}" )
-          dockerImage02 = docker.build( "${repository}/${image02}:$dockerTagLong", "--pull --build-arg BUILD_VERSION=${gitBranchShort} --build-arg BUILD_COMMIT=${GIT_COMMIT} ${image02}" )
-          dockerImage03 = docker.build( "${repository}/${image03}:$dockerTagLong", "--pull --build-arg BUILD_VERSION=${gitBranchShort} --build-arg BUILD_COMMIT=${GIT_COMMIT} ${image03}" )
-          dockerImage04 = docker.build( "${repository}/${image04}:$dockerTagLong", "--pull --build-arg BUILD_VERSION=${gitBranchShort} --build-arg BUILD_COMMIT=${GIT_COMMIT} ${image04}" )
-          dockerImage05 = docker.build( "${repository}/${image05}:$dockerTagLong", "--pull --build-arg BUILD_VERSION=${gitBranchShort} --build-arg BUILD_COMMIT=${GIT_COMMIT} ${image05}" )
-          dockerImage06 = docker.build( "${repository}/${image06}:$dockerTagLong", "--pull --build-arg BUILD_VERSION=${gitBranchShort} --build-arg BUILD_COMMIT=${GIT_COMMIT} ${image06}" )
-          dockerImage07 = docker.build( "${repository}/${image07}:$dockerTagLong", "--pull --build-arg BUILD_VERSION=${gitBranchShort} --build-arg BUILD_COMMIT=${GIT_COMMIT} ${image07}" )
+          timeStamp = (new Date()).format("yyyy-MM-dd'T'HH:mm")
+          repoCreds = "--build-arg DEE_REPO_USER=$DEE_REPO_USR --build-arg DEE_REPO_PASS=$DEE_REPO_PSW"
+          buildArgs = "--pull --build-arg XPLANBOX_VERSION=${gitBranchShort} --build-arg BUILD_COMMIT=${GIT_COMMIT} --build-arg XPLANBOX_BUILD=${timeStamp}"
+          dockerImage01 = docker.build( "${repository}/${image01}:$dockerTagLong", "${buildArgs} ${repoCreds} ${image01}" )
+          dockerImage02 = docker.build( "${repository}/${image02}:$dockerTagLong", "${buildArgs} ${repoCreds} ${image02}" )
+          dockerImage03 = docker.build( "${repository}/${image03}:$dockerTagLong", "${buildArgs} ${repoCreds} ${image03}" )
+          dockerImage04 = docker.build( "${repository}/${image04}:$dockerTagLong", "${buildArgs} ${repoCreds} ${image04}" )
+          dockerImage05 = docker.build( "${repository}/${image05}:$dockerTagLong", "${buildArgs} ${repoCreds} ${image05}" )
+          dockerImage06 = docker.build( "${repository}/${image06}:$dockerTagLong", "${buildArgs} ${repoCreds} ${image06}" )
+          dockerImage07 = docker.build( "${repository}/${image07}:$dockerTagLong", "${buildArgs} ${repoCreds} ${image07}" )
         }
       }
     }

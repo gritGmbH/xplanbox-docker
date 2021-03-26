@@ -33,6 +33,7 @@ FROM tomcat:9.0-jdk8-openjdk-slim
 
 ARG XPLANBOX_BUILD
 ARG XPLANBOX_VERSION
+ARG GIT_COMMIT=0
 
 LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <info@grit.de>" \
 	org.opencontainers.image.title="deegree-core WMS/WFS mit Security" \
@@ -40,7 +41,8 @@ LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <in
 	org.opencontainers.image.vendor="graphische Informationstechnik - Beratungsgesellschaft mbH" \
 	org.opencontainers.image.created="${XPLANBOX_BUILD}" \
 	org.opencontainers.image.url="https://www.deegree-enterprise.de/" \
-	org.opencontainers.image.version="${XPLANBOX_VERSION}"
+	org.opencontainers.image.version="${XPLANBOX_VERSION}" \
+	org.opencontainers.image.revision="${GIT_COMMIT}"
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends libgdal-java proj-bin \
