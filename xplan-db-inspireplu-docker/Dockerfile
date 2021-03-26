@@ -20,15 +20,13 @@ ARG XPLANBOX_VERSION
 
 LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <info@grit.de>" \
 	org.opencontainers.image.title="deegree-core WMS/WFS mit Security" \
-	org.opencontainers.image.description="deegree Enterprise Edition - xPlanBox - XPlanInspirePluDB" \
+	org.opencontainers.image.description="deegree Enterprise Edition - xPlanBox - XPlanDB" \
 	org.opencontainers.image.vendor="graphische Informationstechnik - Beratungsgesellschaft mbH" \
 	org.opencontainers.image.created="${XPLANBOX_BUILD}" \
 	org.opencontainers.image.url="https://www.deegree-enterprise.de/" \
 	org.opencontainers.image.version="${XPLANBOX_VERSION}"
 
-ENV POSTGRES_INITDB_ARGS=--encoding=UTF8
-ENV POSTGRES_DB=inspireplu
+ENV POSTGRES_DB=xplanbox
 
 COPY --from=builder /xplan-workspaces/sql /xplan-db-sql
-RUN ln -s /xplan-db-sql/inspireplu/04_create_inspireplu_schema.sql /docker-entrypoint-initdb.d/14_create_inspireplu_schema.sql \
-	&& ln -s /xplan-db-sql/inspireplu/05_create_inspireplu_view.sql /docker-entrypoint-initdb.d/15_create_inspireplu_view.sql
+COPY 99_init_xplandb.sh /docker-entrypoint-initdb.d/99_init_xplandb.sh

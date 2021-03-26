@@ -6,12 +6,8 @@ ARG DEE_REPO_PASS
 ARG DEE_REPO_URL=http://buildserver.deegree-enterprise.de/nexus/service/local/repositories/dee-releases/content
 ARG XPLANBOX_VERSION
 
-COPY linker.sh /linker.sh
-    
 RUN echo "Downloading files from repo" \
-    && wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-wfs.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-wfs/${XPLANBOX_VERSION}/xplan-wfs-${XPLANBOX_VERSION}.war" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-wms.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-wms/${XPLANBOX_VERSION}/xplan-wms-${XPLANBOX_VERSION}.war" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplansyn-wfs.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplansyn-wfs/${XPLANBOX_VERSION}/xplansyn-wfs-${XPLANBOX_VERSION}.war" \
+    && wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-inspireplu.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-inspireplu/${XPLANBOX_VERSION}/xplan-inspireplu-${XPLANBOX_VERSION}.war" \
 	&& echo "Done"
 
 COPY patches /patches
@@ -20,10 +16,7 @@ COPY --from=tomcat /usr/local/tomcat/conf/web.xml /target/usr/local/tomcat/conf/
 
 RUN echo "Extract and Cleanup" \
 	&& mkdir -p /target/usr/local/tomcat/webapps \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplan-wfs /xplan-wfs.war \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplan-wms /xplan-wms.war \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplansyn-wfs /xplansyn-wfs.war \
-	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan*/WEB-INF/lib \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplan-inspireplu /xplan-inspireplu.war \
     && patch -d /target -p1  </patches/web.xml.patch \
 	&& echo "Done"
 
@@ -35,17 +28,12 @@ ARG XPLANBOX_VERSION
 
 LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <info@grit.de>" \
 	org.opencontainers.image.title="deegree-core WMS/WFS mit Security" \
-	org.opencontainers.image.description="deegree Enterprise Edition - xPlanBox - XPlanWMS,XPlanWFS and XPlanSynWFS" \
+	org.opencontainers.image.description="deegree Enterprise Edition - xPlanBox - XPlanInspirePluWMS, XPlanInspirePluWFS" \
 	org.opencontainers.image.vendor="graphische Informationstechnik - Beratungsgesellschaft mbH" \
 	org.opencontainers.image.created="${XPLANBOX_BUILD}" \
 	org.opencontainers.image.url="https://www.deegree-enterprise.de/" \
 	org.opencontainers.image.version="${XPLANBOX_VERSION}"
 
-ENV LD_LIBRARY_PATH=/usr/lib/jni
 ENV JAVA_OPTS=-Xmx8192m
-
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends libgdal-java proj-bin \
-	&& rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /target /
