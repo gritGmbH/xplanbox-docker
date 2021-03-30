@@ -14,6 +14,7 @@ pipeline {
     image05 = 'xplan-services-docker'
     image06 = 'xplan-services-inspireplu-docker'
     image07 = 'xplan-validator-web-docker'
+    image08 = 'xplan-init'
     DEE_REPO = credentials('dee.nexus.developer')
   }
   agent any
@@ -42,6 +43,7 @@ pipeline {
           dockerImage05 = docker.build( "${repository}/${image05}:$dockerTagLong", "${buildArgs} ${repoCreds} ${image05}" )
           dockerImage06 = docker.build( "${repository}/${image06}:$dockerTagLong", "${buildArgs} ${repoCreds} ${image06}" )
           dockerImage07 = docker.build( "${repository}/${image07}:$dockerTagLong", "${buildArgs} ${repoCreds} ${image07}" )
+          dockerImage08 = docker.build( "${repository}/${image08}:$dockerTagLong", "${buildArgs} ${repoCreds} ${image08}" )
         }
       }
     }
@@ -76,6 +78,8 @@ pipeline {
                 dockerImage06.push("$dockerTagShort")
                 dockerImage07.push("$dockerTagLong")
                 dockerImage07.push("$dockerTagShort")
+                dockerImage08.push("$dockerTagLong")
+                dockerImage08.push("$dockerTagShort")
               }
             }
           }

@@ -80,6 +80,15 @@ docker build \
    --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
    -t xplanbox/xplan-services-inspireplu-docker:${XPLANBOX_VERSION}${BUILD_PREFIX} \
    xplan-services-inspireplu-docker
+
+docker build \
+   --build-arg DEE_REPO_USER=$DEE_REPO_USER \
+   --build-arg DEE_REPO_PASS=$DEE_REPO_PASS \
+   --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
+   --build-arg DEE_REPO_URL=$DEE_REPO_URL \
+   --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
+   -t xplanbox/xplan-init:${XPLANBOX_VERSION}${BUILD_PREFIX} \
+   xplan-init
 ```
 
 ### Manager web ?
