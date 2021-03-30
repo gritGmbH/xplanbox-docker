@@ -1,5 +1,6 @@
-ARG GIT_COMMIT
-FROM xplan-buildpack-deps:${GIT_COMMIT} AS builder
+ARG BUILD_TAG
+
+FROM xplan-buildpack-deps:${BUILD_TAG} AS builder
 
 ARG DEE_REPO_USER
 ARG DEE_REPO_PASS

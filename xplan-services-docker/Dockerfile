@@ -1,5 +1,6 @@
-ARG GIT_COMMIT
-FROM xplan-buildpack-deps:${GIT_COMMIT} AS builder
+ARG BUILD_TAG
+
+FROM xplan-buildpack-deps:${BUILD_TAG} AS builder
 
 ARG DEE_REPO_USER
 ARG DEE_REPO_PASS
@@ -28,8 +29,9 @@ RUN echo "Extract and Cleanup" \
 	&& echo "Done"
 
 # NOTE: OpenJDK variant required for gdal-2.4 dependency
-ARG GIT_COMMIT
-FROM xplan-base-tomcat:${GIT_COMMIT}
+ARG BUILD_TAG
+
+FROM xplan-base-tomcat:${BUILD_TAG}
 
 ARG XPLANBOX_BUILD
 ARG XPLANBOX_VERSION
