@@ -36,7 +36,10 @@ RUN echo "Extract and Cleanup" \
 	&& unzip -d /target/root/ /xplan-update-database.zip \
 	&& unzip -d /target/root/ /xplan-manager-cli.zip \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan-manager-web/WEB-INF/lib /target/root/xplan-*/repo \
+	&& sed -ri "s/^(log4j\.rootLogger)=([^\n]*)$/\1=INFO, stdout/" /target/usr/local/tomcat/webapps/*/WEB-INF/classes/log4j.properties \
+	&& sed -ri "s/^(log4j\.appender\.stdout\.Threshold)=([^\n]*)$/\1=WARN/" /target/usr/local/tomcat/webapps/*/WEB-INF/classes/log4j.properties \
 	&& echo "Done"
+
 
 # NOTE: OpenJDK variant required for gdal-2.4 dependency
 FROM tomcat:9.0-jdk8-openjdk-slim

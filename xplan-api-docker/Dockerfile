@@ -26,6 +26,10 @@ RUN echo "Extract and Cleanup" \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplan-api-manager /xplan-api-manager.war \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplan-api-validator /xplan-api-validator.war \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan*/WEB-INF/lib \
+	&& sed -ri "s/^(log4j\.rootLogger)=([^\n]*)$/\1=INFO, stdout/" /target/usr/local/tomcat/webapps/xplan-api-manager/WEB-INF/classes/log4j.properties \
+	&& sed -ri "s/^(log4j\.appender\.stdout\.Threshold)=([^\n]*)$/\1=INFO/" /target/usr/local/tomcat/webapps/xplan-api-manager/WEB-INF/classes/log4j.properties \
+	&& sed -ri "s/^(log4j\.rootLogger)=([^\n]*)$/\1=INFO, stdout/" /target/usr/local/tomcat/webapps/xplan-api-validator/WEB-INF/classes/log4j.properties \
+	&& sed -ri "s/^(log4j\.appender\.stdout\.Threshold)=([^\n]*)$/\1=WARN/" /target/usr/local/tomcat/webapps/xplan-api-validator/WEB-INF/classes/log4j.properties \
 	&& echo "Done"
 
 # NOTE: OpenJDK variant required for gdal-2.4 dependency
