@@ -11,7 +11,6 @@ ARG HALE_CLI_SHA256=84a4d6bd47d666b9b3b1e0863f05c264df969a7bc273effaecc9c7eb844d
 RUN echo "Downloading exernal components" \
 	&& wget --progress=dot:giga -O /hale-cli.zip "${HALE_CLI_URL}" \
 	&& echo "${HALE_CLI_SHA256} */hale-cli.zip" | sha256sum --strict --check \
-	&& unzip -d / /hale-cli.zip \
 	&& echo "Done"
 
 COPY linker.sh /linker.sh
@@ -35,6 +34,7 @@ RUN echo "Extract and Cleanup" \
 	&& unzip -d /target/root/ /xplan-transform-cli.zip \
 	&& unzip -d /target/root/ /xplan-update-database.zip \
 	&& unzip -d /target/root/ /xplan-manager-cli.zip \
+	&& unzip -d /target/ /hale-cli.zip \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan-manager-web/WEB-INF/lib /target/root/xplan-*/repo \
 	&& sed -ri "s/^(log4j\.rootLogger)=([^\n]*)$/\1=INFO, stdout/" /target/usr/local/tomcat/webapps/*/WEB-INF/classes/log4j.properties \
 	&& sed -ri "s/^(log4j\.appender\.stdout\.Threshold)=([^\n]*)$/\1=WARN/" /target/usr/local/tomcat/webapps/*/WEB-INF/classes/log4j.properties \
