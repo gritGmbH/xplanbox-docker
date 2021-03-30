@@ -38,4 +38,8 @@ LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <in
 
 ENV JAVA_OPTS=-Xmx8192m
 
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends curl \
+	&& rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder /target /

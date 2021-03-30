@@ -47,7 +47,7 @@ ENV LD_LIBRARY_PATH=/usr/lib/jni
 ENV JAVA_OPTS=-Xmx8192m
 
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends libgdal-java proj-bin \
+	&& apt-get install -y --no-install-recommends libgdal-java proj-bin curl \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /target /
