@@ -44,6 +44,8 @@ LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <in
 	org.opencontainers.image.version="${XPLANBOX_VERSION}" \
 	org.opencontainers.image.revision="${GIT_COMMIT}"
 
+ENV JAVA_OPTS=-Xmx8192m -DXPLANBOX_CONFIG=/root/xplan-manager-config/
+
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends libgdal-java proj-bin \
 	&& rm -rf /var/lib/apt/lists/*
