@@ -43,7 +43,7 @@ LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <in
 	org.opencontainers.image.version="${XPLANBOX_VERSION}" \
 	org.opencontainers.image.revision="${GIT_COMMIT}"
 
-ENV JAVA_OPTS=-Xmx8192m -DXPLANBOX_CONFIG=/root/xplan-validator-config/
+ENV JAVA_OPTS="-Xmx8192m -DXPLANBOX_CONFIG=/root/xplan-validator-config/"
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends curl \
