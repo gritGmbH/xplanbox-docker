@@ -1,12 +1,10 @@
-FROM tomcat:9.0-jdk8-openjdk-slim AS tomcat
-FROM buildpack-deps:stable AS builder
+ARG GIT_COMMIT
+FROM xplan-buildpack-deps:${GIT_COMMIT} AS builder
 
 ARG DEE_REPO_USER
 ARG DEE_REPO_PASS
 ARG DEE_REPO_URL=http://buildserver.deegree-enterprise.de/nexus/service/local/repositories/dee-releases/content
 ARG XPLANBOX_VERSION
-
-COPY linker.sh /linker.sh
     
 RUN echo "Downloading files from repo" \
     && wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-validator-web.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-validator-web/${XPLANBOX_VERSION}/xplan-validator-web-${XPLANBOX_VERSION}.war" \
@@ -28,7 +26,7 @@ RUN echo "Extract and Cleanup" \
 	&& echo "Done"
 
 # NOTE: OpenJDK variant required for gdal-2.4 dependency
-FROM tomcat:9.0-jdk8-openjdk-slim
+FROM tomcat:9.0-jdk8-openjdk
 
 ARG XPLANBOX_BUILD
 ARG XPLANBOX_VERSION
@@ -44,9 +42,5 @@ LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <in
 	org.opencontainers.image.revision="${GIT_COMMIT}"
 
 ENV JAVA_OPTS="-Xmx8192m -DXPLANBOX_CONFIG=/root/xplan-validator-config/"
-
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends curl \
-	&& rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /target /

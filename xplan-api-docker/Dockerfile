@@ -1,4 +1,5 @@
-FROM buildpack-deps:stable AS builder
+ARG GIT_COMMIT
+FROM xplan-buildpack-deps:${GIT_COMMIT} AS builder
 
 ARG DEE_REPO_USER
 ARG DEE_REPO_PASS
@@ -11,10 +12,7 @@ ARG HALE_CLI_SHA256=84a4d6bd47d666b9b3b1e0863f05c264df969a7bc273effaecc9c7eb844d
 RUN echo "Downloading exernal components" \
 	&& wget --progress=dot:giga -O /hale-cli.zip "${HALE_CLI_URL}" \
 	&& echo "${HALE_CLI_SHA256} */hale-cli.zip" | sha256sum --strict --check \
-	&& unzip -d / /hale-cli.zip \
 	&& echo "Done"
-
-COPY linker.sh /linker.sh
 
 RUN echo "Downloading files from repo" \
     && wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-api-manager.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-api-manager/${XPLANBOX_VERSION}/xplan-api-manager-${XPLANBOX_VERSION}.war" \
@@ -25,6 +23,7 @@ RUN echo "Extract and Cleanup" \
 	&& mkdir -p /target/usr/local/tomcat/webapps \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplan-api-manager /xplan-api-manager.war \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplan-api-validator /xplan-api-validator.war \
+	&& unzip -d /target/ /hale-cli.zip \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan*/WEB-INF/lib \
 	&& sed -ri "s/^(log4j\.rootLogger)=([^\n]*)$/\1=INFO, stdout/" /target/usr/local/tomcat/webapps/xplan-api-manager/WEB-INF/classes/log4j.properties \
 	&& sed -ri "s/^(log4j\.appender\.stdout\.Threshold)=([^\n]*)$/\1=INFO/" /target/usr/local/tomcat/webapps/xplan-api-manager/WEB-INF/classes/log4j.properties \
@@ -33,7 +32,8 @@ RUN echo "Extract and Cleanup" \
 	&& echo "Done"
 
 # NOTE: OpenJDK variant required for gdal-2.4 dependency
-FROM tomcat:9.0-jdk8-openjdk-slim
+ARG GIT_COMMIT
+FROM xplan-base-tomcat:${GIT_COMMIT}
 
 ARG XPLANBOX_BUILD
 ARG XPLANBOX_VERSION
@@ -49,9 +49,5 @@ LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <in
 	org.opencontainers.image.revision="${GIT_COMMIT}"
 
 ENV JAVA_OPTS="-Xmx8192m -DXPLANBOX_CONFIG=/root/xplan-manager-config/"
-
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends libgdal-java proj-bin curl \
-	&& rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /target /

@@ -1,5 +1,5 @@
-FROM tomcat:9.0-jdk8-openjdk-slim AS tomcat
-FROM buildpack-deps:stable AS builder
+ARG GIT_COMMIT
+FROM xplan-buildpack-deps:${GIT_COMMIT} AS builder
 
 ARG DEE_REPO_USER
 ARG DEE_REPO_PASS
@@ -23,7 +23,7 @@ RUN echo "Extract and Cleanup" \
 	&& echo "Done"
 
 # NOTE: OpenJDK variant required for gdal-2.4 dependency
-FROM tomcat:9.0-jdk8-openjdk-slim
+FROM tomcat:9.0-jdk8-openjdk
 
 ARG XPLANBOX_BUILD
 ARG XPLANBOX_VERSION
@@ -39,9 +39,5 @@ LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <in
 	org.opencontainers.image.revision="${GIT_COMMIT}"
 
 ENV JAVA_OPTS=-Xmx8192m
-
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends curl \
-	&& rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /target /
