@@ -108,7 +108,7 @@ pipeline {
         sh "docker rmi ${repository}/${image05}:$dockerTagLong ${repository}/${image05}:$dockerTagShort"
         sh "docker rmi ${repository}/${image06}:$dockerTagLong ${repository}/${image06}:$dockerTagShort"
         sh "docker rmi ${repository}/${image07}:$dockerTagLong ${repository}/${image07}:$dockerTagShort"
-        sh "docker rmi ${prepare01}:${GIT_COMMIT} ${prepare02}:${GIT_COMMIT}"
+        sh "docker rmi ${prepare01}:${dockerTagLong} ${prepare02}:${dockerTagLong}"
       }
     }
   }

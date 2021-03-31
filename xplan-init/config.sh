@@ -12,9 +12,12 @@ mv "$WS/xplansyn-wms-workspace/gdal.ignore" "$WS/xplansyn-wms-workspace/gdal.xml
 # validatorConfiguration.properties
 sed -ri "s/^(validatorWmsEndpoint)=([^\n]*)$/\1=\/xplan-validator-wms\/services\/wms/" "$MNGR/validatorConfiguration.properties"
 sed -ri "s/^(validatorWmsEndpoint)=([^\n]*)$/\1=\/xplan-validator-wms\/services\/wms/" "$VALCFG/validatorConfiguration.properties"
+sed -ri "s/^(apiUrl)=([^\n]*)$/\1=\/xplan-api-validator/" "$MNGR/validatorApiConfiguration.properties"
+sed -ri "s/^(apiUrl)=([^\n]*)$/\1=\/xplan-api-validator/" "$VALCFG/validatorApiConfiguration.properties"
 
 # managerApiConfiguration.properties
 sed -ri "s/^(wmsUrl)=([^\n]*)$/\1=\/xplan-wms\/services/" "$MNGR/managerApiConfiguration.properties"
+sed -ri "s/^(apiUrl)=([^\n]*)$/\1=\/xplan-api-manager/" "$MNGR/managerApiConfiguration.properties"
 
 # managerWebConfiguration.properties
 sed -ri "s/^(activatePublishingInspirePlu)=([^\n]*)$/\1=true/" "$MNGR/managerWebConfiguration.properties"
@@ -30,6 +33,12 @@ sed -i 's/workspaceReloadUser=/workspaceReloadUser=deegree/' "$MNGR/managerConfi
 sed -i 's/workspaceReloadPassword=/workspaceReloadPassword=deegree/' "$MNGR/managerConfiguration.properties"
 
 sed -i 's/pathToHaleCli=/pathToHaleCli=\/hale\/bin\/hale/' "$MNGR/managerConfiguration.properties"
+
+# inspire schema imports
+for i in  /work/*-ws/*/appschemas/inspireplu/PlannedLandUse.xsd
+do
+    sed -ri 's/(schemaLocation=")http:(\/\/inspire.ec.europa.eu)/\1https:\2/' $i
+done
 
 # services
 for i in $WS/*/jdbc/*.xml
