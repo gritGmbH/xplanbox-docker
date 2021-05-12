@@ -91,6 +91,20 @@ docker build \
    xplan-init
 ```
 
+
+### Create initial configuration
+
+Example usage:
+```
+docker run -it --rm \
+  -v /media/shared/workspaces/${TARGET_NAME}:/dst/srv-ws \
+  -v /media/shared/workspaces/${TARGET_NAME}-plu:/dst/plu-ws \
+  -v /media/shared/workspaces/${TARGET_NAME}-val:/dst/val-ws \
+  -v /media/shared/managers/${TARGET_NAME}:/dst/mng-cfg \
+  -v /media/shared/validators/${TARGET_NAME}:/dst/val-cfg \
+  grit/xplan-init:${XPLANBOX_VERSION}
+```
+
 ### Manager web ?
 
 ```properties
