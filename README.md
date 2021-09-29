@@ -6,23 +6,44 @@ docker cp 33db:/docker-entrypoint-initdb.d/setup_db.sh xplan-db-docker/setup.sh
 
 # Build commands locally
 
-#
-
+```bash
+docker run -it --rm -e POSTGRES_DB=xplanbox -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres01 grit/xplan-db:${XPLANBOX_VERSION}${BUILD_SUFFIX} 
+```
 
 ```bash
 export DEE_REPO_USER=user
 export DEE_REPO_PASS=pass
-export DEE_REPO_URL=http://192.168.100.42:8088
-export XPLANBOX_VERSION=4.0.1
-export BUILD_PREFIX=-SNAPSHOT
+#export DEE_REPO_URL=http://192.168.100.42:8088
+export DEE_REPO_URL=http://194.115.58.42:8088
+export XPLANBOX_VERSION=4.2
+export BUILD_SUFFIX=-SNAPSHOT
+export BUILD_TAG=${XPLANBOX_VERSION}${BUILD_SUFFIX}
 
 docker build \
    --build-arg DEE_REPO_USER=$DEE_REPO_USER \
    --build-arg DEE_REPO_PASS=$DEE_REPO_PASS \
    --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
    --build-arg DEE_REPO_URL=$DEE_REPO_URL \
+   -t grit/xplan-buildpack-deps:${BUILD_TAG} \
+   xplan-buildpack-deps
+
+docker build \
+   --build-arg BUILD_TAG=$BUILD_TAG \
+   -t grit/xplan-init:${BUILD_TAG} \
+   xplan-init
+
+docker build \
+   -t grit/xplan-base-tomcat:${BUILD_TAG} \
+   xplan-base-tomcat
+
+docker build \
+   --build-arg DEE_REPO_USER=$DEE_REPO_USER \
+   --build-arg DEE_REPO_PASS=$DEE_REPO_PASS \
+   --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
+   --build-arg DEE_REPO_URL=$DEE_REPO_URL \
+   --build-arg BUILD_TAG=$BUILD_TAG \
    --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
-   -t xplanbox/xplan-db-docker:${XPLANBOX_VERSION}${BUILD_PREFIX} \
+   -t grit/xplan-db-docker:${BUILD_TAG} \
    xplan-db-docker
 
 docker build \
@@ -30,19 +51,16 @@ docker build \
    --build-arg DEE_REPO_PASS=$DEE_REPO_PASS \
    --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
    --build-arg DEE_REPO_URL=$DEE_REPO_URL \
+   --build-arg BUILD_TAG=$BUILD_TAG \
    --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
-   -t xplanbox/xplan-db-inspireplu-docker:${XPLANBOX_VERSION}${BUILD_PREFIX} \
+   -t grit/xplan-db-inspireplu-docker:${BUILD_TAG} \
    xplan-db-inspireplu-docker
 
-docker run -it --rm -e POSTGRES_DB=xplanbox -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres01 xplanbox/xplan-db:${XPLANBOX_VERSION}${BUILD_PREFIX} 
-
 docker build \
-   --build-arg DEE_REPO_USER=$DEE_REPO_USER \
-   --build-arg DEE_REPO_PASS=$DEE_REPO_PASS \
    --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
-   --build-arg DEE_REPO_URL=$DEE_REPO_URL \
+   --build-arg BUILD_TAG=$BUILD_TAG \
    --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
-   -t xplanbox/xplan-manager-web-docker:${XPLANBOX_VERSION}${BUILD_PREFIX} \
+   -t grit/xplan-manager-web-docker:${BUILD_TAG} \
    xplan-manager-web-docker
 
 docker build \
@@ -51,7 +69,7 @@ docker build \
    --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
    --build-arg DEE_REPO_URL=$DEE_REPO_URL \
    --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
-   -t xplanbox/xplan-services-docker:${XPLANBOX_VERSION}${BUILD_PREFIX} \
+   -t grit/xplan-services-docker:${BUILD_TAG} \
    xplan-services-docker
 
 docker build \
@@ -60,7 +78,7 @@ docker build \
    --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
    --build-arg DEE_REPO_URL=$DEE_REPO_URL \
    --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
-   -t xplanbox/xplan-api-docker:${XPLANBOX_VERSION}${BUILD_PREFIX} \
+   -t grit/xplan-api-docker:${BUILD_TAG} \
    xplan-api-docker
 
 docker build \
@@ -69,7 +87,7 @@ docker build \
    --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
    --build-arg DEE_REPO_URL=$DEE_REPO_URL \
    --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
-   -t xplanbox/xplan-validator-web-docker:${XPLANBOX_VERSION}${BUILD_PREFIX} \
+   -t grit/xplan-validator-web-docker:${BUILD_TAG} \
    xplan-validator-web-docker
 
 docker build \
@@ -78,17 +96,10 @@ docker build \
    --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
    --build-arg DEE_REPO_URL=$DEE_REPO_URL \
    --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
-   -t xplanbox/xplan-services-inspireplu-docker:${XPLANBOX_VERSION}${BUILD_PREFIX} \
+   -t grit/xplan-services-inspireplu-docker:${BUILD_TAG} \
    xplan-services-inspireplu-docker
 
-docker build \
-   --build-arg DEE_REPO_USER=$DEE_REPO_USER \
-   --build-arg DEE_REPO_PASS=$DEE_REPO_PASS \
-   --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
-   --build-arg DEE_REPO_URL=$DEE_REPO_URL \
-   --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
-   -t xplanbox/xplan-init:${XPLANBOX_VERSION}${BUILD_PREFIX} \
-   xplan-init
+
 ```
 
 

@@ -1,13 +1,10 @@
-FROM buildpack-deps:stable AS builder
+ARG BUILD_TAG
 
-ARG DEE_REPO_USER
-ARG DEE_REPO_PASS
-ARG DEE_REPO_URL=http://buildserver.deegree-enterprise.de/nexus/service/local/repositories/dee-releases/content
-ARG XPLANBOX_VERSION
+FROM xplan-init:${BUILD_TAG} AS builder
 
-RUN echo "Downloading files from repo" \
-    && wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-workspaces.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplan-manager-workspace-default.zip" \
-	&& unzip -d /xplan-workspaces /xplan-workspaces.zip
+RUN echo "Extract files from template" \
+    && mkdir /xplan-workspaces \
+    && tar -xvzf /tpl/srv-ws.tgz -C /xplan-workspaces
 
 FROM postgis/postgis:12-2.5-alpine
 
@@ -26,5 +23,5 @@ LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <in
 
 ENV POSTGRES_DB=xplanbox
 
-COPY --from=builder /xplan-workspaces/sql /xplan-db-sql
+COPY --from=builder /xplan-workspaces/xplan-manager-workspace/sql /xplan-db-sql
 COPY 99_init_xplandb.sh /docker-entrypoint-initdb.d/99_init_xplandb.sh

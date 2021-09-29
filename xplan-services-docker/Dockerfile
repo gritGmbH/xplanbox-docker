@@ -2,33 +2,22 @@ ARG BUILD_TAG
 
 FROM xplan-buildpack-deps:${BUILD_TAG} AS builder
 
-ARG DEE_REPO_USER
-ARG DEE_REPO_PASS
-ARG DEE_REPO_URL=http://buildserver.deegree-enterprise.de/nexus/service/local/repositories/dee-releases/content
-ARG XPLANBOX_VERSION
-
-RUN echo "Downloading files from repo" \
-    && wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-wfs.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-wfs/${XPLANBOX_VERSION}/xplan-wfs-${XPLANBOX_VERSION}.war" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-wms.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-wms/${XPLANBOX_VERSION}/xplan-wms-${XPLANBOX_VERSION}.war" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplansyn-wfs.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplansyn-wfs/${XPLANBOX_VERSION}/xplansyn-wfs-${XPLANBOX_VERSION}.war" \
-	&& echo "Done"
-
 COPY patches /patches
 COPY conf /target/usr/local/tomcat/conf
 COPY --from=tomcat /usr/local/tomcat/conf/web.xml /target/usr/local/tomcat/conf/web.xml
 
 RUN echo "Extract and Cleanup" \
 	&& mkdir -p /target/usr/local/tomcat/webapps \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplan-wfs /xplan-wfs.war \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplan-wms /xplan-wms.war \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplansyn-wfs /xplansyn-wfs.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplan-wfs /dist/xplan-wfs.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplan-wms /dist/xplan-wms.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplansyn-wfs /dist/xplansyn-wfs.war \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan*/WEB-INF/lib \
     && patch -d /target -p1  </patches/web.xml.patch \
 	&& sed -ri "s/^(log4j\.rootLogger)=([^\n]*)$/\1=INFO, stdout/" /target/usr/local/tomcat/webapps/*/WEB-INF/classes/log4j.properties \
 	&& sed -ri "s/^(log4j\.appender\.stdout\.Threshold)=([^\n]*)$/\1=WARN/" /target/usr/local/tomcat/webapps/*/WEB-INF/classes/log4j.properties \
 	&& echo "Done"
 
-# NOTE: OpenJDK variant required for gdal-2.4 dependency
+# NOTE: See used variant in xplan-base-tomcat
 ARG BUILD_TAG
 
 FROM xplan-base-tomcat:${BUILD_TAG}

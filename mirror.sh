@@ -6,36 +6,15 @@ test -z "$user" && exit 5
 test -z "$password" && exit 5
 
 DEST_DIR=./repo
-REPO_URL=http://buildserver.deegree-enterprise.de/nexus/service/local/repositories/dee-releases/content
+REPO_URL=http://buildserver.deegree-enterprise.de/nexus/service/local/repositories/dee-distribution-releases/content
 
-XPLANBOX_VERSION=4.0.1
-#FILES="/de/latlon/product/xplanbox/xplan-api-manager/${XPLANBOX_VERSION}/xplan-api-manager-${XPLANBOX_VERSION}.war"
-FILES="/de/latlon/product/xplanbox/xplan-api-manager/${XPLANBOX_VERSION}/xplan-api-manager-${XPLANBOX_VERSION}.war
-    /de/latlon/product/xplanbox/xplan-api-validator/${XPLANBOX_VERSION}/xplan-api-validator-${XPLANBOX_VERSION}.war
-    /de/latlon/product/xplanbox/xplan-benutzerhandbuch/${XPLANBOX_VERSION}/xplan-benutzerhandbuch-${XPLANBOX_VERSION}-html.zip
-    /de/latlon/product/xplanbox/xplan-benutzerhandbuch/${XPLANBOX_VERSION}/xplan-benutzerhandbuch-${XPLANBOX_VERSION}-pdf.zip
-    /de/latlon/product/xplanbox/xplan-betriebshandbuch/${XPLANBOX_VERSION}/xplan-betriebshandbuch-${XPLANBOX_VERSION}-html.zip
-    /de/latlon/product/xplanbox/xplan-betriebshandbuch/${XPLANBOX_VERSION}/xplan-betriebshandbuch-${XPLANBOX_VERSION}-pdf.zip
-    /de/latlon/product/xplanbox/xplan-inspireplu/${XPLANBOX_VERSION}/xplan-inspireplu-${XPLANBOX_VERSION}.war
-    /de/latlon/product/xplanbox/xplan-manager-cli/${XPLANBOX_VERSION}/xplan-manager-cli-${XPLANBOX_VERSION}.zip
-    /de/latlon/product/xplanbox/xplan-manager-config/${XPLANBOX_VERSION}/xplan-manager-config-${XPLANBOX_VERSION}-default.zip
-    /de/latlon/product/xplanbox/xplan-manager-web/${XPLANBOX_VERSION}/xplan-manager-web-${XPLANBOX_VERSION}.war
-    /de/latlon/product/xplanbox/xplan-root/${XPLANBOX_VERSION}/xplan-root-${XPLANBOX_VERSION}-default.war
-    /de/latlon/product/xplanbox/xplan-transform-cli/${XPLANBOX_VERSION}/xplan-transform-cli-${XPLANBOX_VERSION}.zip
-    /de/latlon/product/xplanbox/xplan-update-database/${XPLANBOX_VERSION}/xplan-update-database-${XPLANBOX_VERSION}.zip
-    /de/latlon/product/xplanbox/xplan-validator-cli/${XPLANBOX_VERSION}/xplan-validator-cli-${XPLANBOX_VERSION}.zip
-    /de/latlon/product/xplanbox/xplan-validator-config/${XPLANBOX_VERSION}/xplan-validator-config-${XPLANBOX_VERSION}.zip
-    /de/latlon/product/xplanbox/xplan-validator-web/${XPLANBOX_VERSION}/xplan-validator-web-${XPLANBOX_VERSION}.war
-    /de/latlon/product/xplanbox/xplan-validator-wms/${XPLANBOX_VERSION}/xplan-validator-wms-${XPLANBOX_VERSION}.war
-    /de/latlon/product/xplanbox/xplan-wfs/${XPLANBOX_VERSION}/xplan-wfs-${XPLANBOX_VERSION}.war
-    /de/latlon/product/xplanbox/xplan-wms/${XPLANBOX_VERSION}/xplan-wms-${XPLANBOX_VERSION}.war
-    /de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplan-inspireplu-workspace-default.zip
-    /de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplan-manager-workspace-default.zip
-    /de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplan-validator-wms-workspace-default.zip
-    /de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplan-wfs-workspace-default.zip
-    /de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplansyn-wfs-workspace-default.zip
-    /de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplansyn-wms-workspace-default.zip
-    /de/latlon/product/xplanbox/xplansyn-wfs/${XPLANBOX_VERSION}/xplansyn-wfs-${XPLANBOX_VERSION}.war"
+#XPLANBOX_VERSION=4.0.1
+#FILES="/de/latlon/product/xplanbox/xplan-distribution/${XPLANBOX_VERSION}/xplan-distribution-${XPLANBOX_VERSION}.zip
+#    /de/latlon/product/xplanbox/xplan-distribution/${XPLANBOX_VERSION}/xplan-distribution-${XPLANBOX_VERSION}.pom"
+
+XPLANBOX_VERSION=4.2
+FILES="/de/latlon/product/xplanbox/xplan-distribution/${XPLANBOX_VERSION}/xplan-distribution-${XPLANBOX_VERSION}.zip
+    /de/latlon/product/xplanbox/xplan-distribution/${XPLANBOX_VERSION}/xplan-distribution-${XPLANBOX_VERSION}.pom"
 
 echo "Starting to load files"
 echo ""

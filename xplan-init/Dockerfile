@@ -1,40 +1,28 @@
-FROM buildpack-deps:stable AS builder
+ARG BUILD_TAG
 
-ARG DEE_REPO_USER
-ARG DEE_REPO_PASS
-ARG DEE_REPO_URL=http://buildserver.deegree-enterprise.de/nexus/service/local/repositories/dee-releases/content
-ARG XPLANBOX_VERSION
-
-RUN echo "Downloading files from repo" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-inspireplu-workspace.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplan-inspireplu-workspace-default.zip" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-manager-workspace.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplan-manager-workspace-default.zip" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-validator-wms-workspace.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplan-validator-wms-workspace-default.zip" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-wfs-workspace.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplan-wfs-workspace-default.zip" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplansyn-wfs-workspace.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplansyn-wfs-workspace-default.zip" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplansyn-wms-workspace.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-workspaces/${XPLANBOX_VERSION}/xplan-workspaces-${XPLANBOX_VERSION}-xplansyn-wms-workspace-default.zip" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-validator-config.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-validator-config/${XPLANBOX_VERSION}/xplan-validator-config-${XPLANBOX_VERSION}.zip" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-manager-config.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-manager-config/${XPLANBOX_VERSION}/xplan-manager-config-${XPLANBOX_VERSION}-default.zip" \
-	&& echo "Done"
+FROM xplan-buildpack-deps:${BUILD_TAG} AS builder
 
 COPY template /work
 COPY config.sh /config.sh
+COPY database.sh /tpl/database.sh
 COPY copy.sh /tpl/copy.sh
 
 RUN echo "Extract and Cleanup" \
 	&& mkdir -p /work/srv-ws  \
-	&& unzip -d /work/srv-ws/xplan-wfs-workspace /xplan-wfs-workspace.zip \
-	&& unzip -d /work/srv-ws/xplansyn-wfs-workspace /xplansyn-wfs-workspace.zip \
-	&& unzip -d /work/srv-ws/xplansyn-wms-workspace /xplansyn-wms-workspace.zip \
-	&& unzip -d /work/srv-ws/xplan-manager-workspace /xplan-manager-workspace.zip \
+	&& unzip -d /work/srv-ws/xplan-wfs-workspace /dist/xplan-workspaces-xplan-wfs-workspace-default.zip \
+	&& unzip -d /work/srv-ws/xplansyn-wfs-workspace /dist/xplan-workspaces-xplansyn-wfs-workspace-default.zip \
+	&& unzip -d /work/srv-ws/xplansyn-wms-workspace /dist/xplan-workspaces-xplansyn-wms-workspace-default.zip \
+	&& unzip -d /work/srv-ws/xplan-manager-workspace /dist/xplan-workspaces-xplan-manager-workspace-default.zip \
 	&& mkdir -p /work/mng-cfg  \
-	&& unzip -d /work/mng-cfg /xplan-manager-config.zip \
+	&& unzip -d /work/mng-cfg /dist/xplan-manager-config-default.zip \
 	&& mkdir -p /work/val-cfg  \
-	&& unzip -d /work/val-cfg /xplan-validator-config.zip \
+	&& unzip -d /work/val-cfg /dist/xplan-validator-config.zip \
 	&& mkdir -p /work/val-ws  \
-	&& unzip -d /work/val-ws/xplan-validator-wms-workspace /xplan-validator-wms-workspace.zip \
+	&& unzip -d /work/val-ws/xplan-validator-wms-workspace /dist/xplan-workspaces-xplan-validator-wms-workspace-default.zip \
 	&& mkdir -p /work/plu-ws  \
-	&& unzip -d /work/plu-ws/xplan-inspireplu-workspace /xplan-inspireplu-workspace.zip \
+	&& unzip -d /work/plu-ws/xplan-inspireplu-workspace /dist/xplan-workspaces-xplan-inspireplu-workspace-default.zip \
 	&& bash /config.sh \
+	&& bash /tpl/database.sh \
 	&& cd /work/srv-ws && tar -cvzf /tpl/srv-ws.tgz . \
 	&& cd /work/mng-cfg && tar -cvzf /tpl/mng-cfg.tgz . \
 	&& cd /work/val-cfg && tar -cvzf /tpl/val-cfg.tgz . \
@@ -42,7 +30,7 @@ RUN echo "Extract and Cleanup" \
 	&& cd /work/plu-ws && tar -cvzf /tpl/plu-ws.tgz . \
 	&& echo "Done"
 
-FROM bash:5.1
+FROM buildpack-deps:stable-curl
 
 LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <info@grit.de>" \
 	org.opencontainers.image.title="deegree-core WMS/WFS mit Security" \
@@ -55,4 +43,9 @@ LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <in
 
 COPY --from=builder /tpl /tpl
 
-CMD [ "/usr/local/bin/bash", "/tpl/copy.sh" ]
+RUN set -eux \
+    && apt-get update \
+    && apt-get install -y xmlstarlet jq git bzip2 file patch unzip xz-utils \
+    && rm -rf /var/lib/apt/lists/*
+
+CMD [ "/bin/bash", "/tpl/copy.sh" ]

@@ -1,5 +1,5 @@
-# NOTE: OpenJDK variant required for gdal-2.4 dependency
-FROM tomcat:9.0-jdk8-openjdk
+# NOTE: Ubuntu Focal 20.04 LTS required for gdal 3.0 dependency
+FROM tomcat:9.0-jdk8-temurin-focal
 
 ENV LD_LIBRARY_PATH=/usr/lib/jni
 

@@ -2,37 +2,22 @@ ARG BUILD_TAG
 
 FROM xplan-buildpack-deps:${BUILD_TAG} AS builder
 
-ARG DEE_REPO_USER
-ARG DEE_REPO_PASS
-ARG DEE_REPO_URL=http://buildserver.deegree-enterprise.de/nexus/service/local/repositories/dee-releases/content
-ARG XPLANBOX_VERSION
-
-RUN echo "Downloading files from repo" \
-    && wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-manager-web.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-manager-web/${XPLANBOX_VERSION}/xplan-manager-web-${XPLANBOX_VERSION}.war" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-benutzerhandbuch.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-benutzerhandbuch/${XPLANBOX_VERSION}/xplan-benutzerhandbuch-${XPLANBOX_VERSION}-html.zip" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-betriebshandbuch.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-betriebshandbuch/${XPLANBOX_VERSION}/xplan-betriebshandbuch-${XPLANBOX_VERSION}-html.zip" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-root.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-root/${XPLANBOX_VERSION}/xplan-root-${XPLANBOX_VERSION}-default.war" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-transform-cli.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-transform-cli/${XPLANBOX_VERSION}/xplan-transform-cli-${XPLANBOX_VERSION}.zip" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-update-database.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-update-database/${XPLANBOX_VERSION}/xplan-update-database-${XPLANBOX_VERSION}.zip" \
-	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /xplan-manager-cli.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-manager-cli/${XPLANBOX_VERSION}/xplan-manager-cli-${XPLANBOX_VERSION}.zip" \
-	&& echo "Done"
-
 RUN echo "Extract and Cleanup" \
 	&& mkdir -p /target/usr/local/tomcat/webapps /target/root \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplan-manager-web /xplan-manager-web.zip \
-	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /xplan-root.zip \
-	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /xplan-benutzerhandbuch.zip \
-	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /xplan-betriebshandbuch.zip \
-	&& unzip -d /target/root/ /xplan-transform-cli.zip \
-	&& unzip -d /target/root/ /xplan-update-database.zip \
-	&& unzip -d /target/root/ /xplan-manager-cli.zip \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplan-manager-web /dist/xplan-manager-web.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /dist/xplan-root-default.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /dist/xplan-betriebshandbuch-html.zip \
+	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /dist/xplan-benutzerhandbuch-html.zip \
+	&& unzip -d /target/root/ /dist/xplan-transform-cli.zip \
+	&& unzip -d /target/root/ /dist/xplan-update-database.zip \
+	&& unzip -d /target/root/ /dist/xplan-manager-cli.zip \
 	&& unzip -d /target/ /hale-cli.zip \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan-manager-web/WEB-INF/lib /target/root/xplan-*/repo \
 	&& sed -ri "s/^(log4j\.rootLogger)=([^\n]*)$/\1=INFO, stdout/" /target/usr/local/tomcat/webapps/*/WEB-INF/classes/log4j.properties \
 	&& sed -ri "s/^(log4j\.appender\.stdout\.Threshold)=([^\n]*)$/\1=WARN/" /target/usr/local/tomcat/webapps/*/WEB-INF/classes/log4j.properties \
 	&& echo "Done"
 
-# NOTE: OpenJDK variant required for gdal-2.4 dependency
+# NOTE: See used variant in xplan-base-tomcat
 ARG BUILD_TAG
 
 FROM xplan-base-tomcat:${BUILD_TAG}
