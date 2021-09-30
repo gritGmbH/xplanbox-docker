@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xplan-validator
+  labels:
+    app: xplan-validator
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: xplan-validator
+  template:
+    metadata:
+      labels:
+        app: xplan-validator
+    spec:
+      containers:
+        - name: xplan-validator
+          image: grit/xplan-validator-web-docker:4.2-SNAPSHOT
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+          volumeMounts:
+            - mountPath: /root/.deegree
+              name: xplan-val-workspace
+              subPath: val-workspace
+            - mountPath: /root/xplan-validator-config
+              name: xplan-val-workspace
+              subPath: val-config
+      initContainers:
+        - name: init-volume-ws
+          image: grit/xplan-init:4.2-SNAPSHOT
+          volumeMounts:
+            - mountPath: /dst/val-ws
+              name: xplan-val-workspace
+              subPath: val-workspace
+            - mountPath: /dst/val-cfg
+              name: xplan-val-workspace
+              subPath: val-config
+      volumes:
+        - name: xplan-val-workspace
+          persistentVolumeClaim:
+            claimName: xplan-val-workspace-pvc
+#      imagePullSecrets:
+#        - name: ci-pull-secret

@@ -1,0 +1,133 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xplan-manager
+  labels:
+    app: xplan-manager
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: xplan-manager
+  template:
+    metadata:
+      labels:
+        app: xplan-manager
+    spec:
+      #affinity:
+      #  podAffinity:
+      #    requiredDuringSchedulingIgnoredDuringExecution:
+      #      - labelSelector:
+      #          matchExpressions:
+      #            - key: app
+      #              operator: In
+      #              values:
+      #              - xplan-services
+      #        topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: xplan-manager
+          image: grit/xplan-manager-web-docker:4.2-SNAPSHOT
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+          volumeMounts:
+            - mountPath: /root/.deegree
+              name: xplan-workspace
+            - mountPath: /root/xplan-manager-config
+              name: xplan-config
+              subPath: manager
+              readOnly: true
+      initContainers:
+        - name: init-volume-ws
+          image: grit/xplan-init:4.2-SNAPSHOT
+          volumeMounts:
+            - mountPath: /dst/srv-ws
+              name: xplan-workspace
+            - mountPath: /dst/mng-cfg
+              name: xplan-config
+              subPath: manager
+        - name: init-config-manager
+          image: grit/xplan-init:4.2-SNAPSHOT
+          command: ["sh", "/scripts/configure_manager.sh"]
+          volumeMounts:
+            - mountPath: /manager
+              name: xplan-config
+              subPath: manager
+            - mountPath: /scripts
+              name: xplan-manager-cfg-script
+        - name: init-xplan-db
+          image: grit/xplan-startup:2020.2
+          command: ["/app/wait-for-postgres.sh", "-t", "0"]
+          env:
+            - name: DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_DATABASE
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASS
+            - name: HOSTS
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PORT
+        - name: init-services-wms
+          image: grit/xplan-startup:2020.2
+          command:
+            [
+              "/app/wait-for-url.sh",
+              "-t",
+              "0",
+              "-u",
+              "xplan-services:8080/xplan-wms/",
+            ]
+        - name: init-services-syn-wfs
+          image: grit/xplan-startup:2020.2
+          command:
+            [
+              "/app/wait-for-url.sh",
+              "-t",
+              "0",
+              "-u",
+              "xplan-services:8080/xplansyn-wfs/",
+            ]
+        - name: init-services-wfs
+          image: grit/xplan-startup:2020.2
+          command:
+            [
+              "/app/wait-for-url.sh",
+              "-t",
+              "0",
+              "-u",
+              "xplan-services:8080/xplan-wfs/",
+            ]
+      volumes:
+        - name: xplan-workspace
+          persistentVolumeClaim:
+            claimName: xplan-workspace-pvc
+        - name: xplan-config
+          persistentVolumeClaim:
+            claimName: xplan-config-pvc
+        - name: xplan-manager-cfg-script
+          configMap:
+            name: xplan-manager-cfg-script
+        - name: db-secret
+          secret:
+            secretName: xplan-pg-secrect
+#      imagePullSecrets:
+#        - name: ci-pull-secret

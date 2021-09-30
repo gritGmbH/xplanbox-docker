@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: xplan-db
+  labels:
+    app: xplan-db
+spec:
+  selector:
+    app: xplan-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

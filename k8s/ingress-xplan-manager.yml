@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    #cert-manager.io/cluster-issuer: letsencrypt-http01-production
+    kubernetes.io/ingress.class: nginx
+    # allow upload / post up to 1024 megabytes
+    nginx.ingress.kubernetes.io/proxy-body-size: 1024m
+    # enforce http to https redirection for authentication
+    #nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # enable basic authentication
+    #nginx.ingress.kubernetes.io/auth-type: basic
+    #nginx.ingress.kubernetes.io/auth-secret: xplan-manager-auth
+    #nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - manager'
+  labels:
+    app: xplan-manager-ingress
+  name: xplan-manager-ingress
+spec:
+  rules:
+  - host: ${ENV_URL}
+    http:
+      paths:
+      - path: /xplan-manager-web/
+        backend:
+          serviceName: xplan-manager
+          servicePort: 8080
+  #tls:
+  #- hosts:
+  #  - ${ENV_URL}
+  #  secretName: ${ENV_URL}-le-production-cert

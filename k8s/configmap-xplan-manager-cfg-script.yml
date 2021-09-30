@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: xplan-manager-cfg-script
+data:
+  configure_manager.sh: |
+    #!/bin/sh
+    # basemap
+    #sed -i 's/^basemapUrl=.*$/basemapUrl=https:\/\/server.domain.de\/services?/' "/manager/managerWebConfiguration.properties"
+    #sed -i 's/^basemapLayer=.*$/basemapLayer=1,2,3/' "/manager/managerWebConfiguration.properties"
+    #sed -i 's/^activatePublishingInspirePlu=.*$/activatePublishingInspirePlu=false/' "/manager/managerWebConfiguration.properties"
