@@ -24,15 +24,17 @@ docker build \
    --build-arg DEE_REPO_PASS=$DEE_REPO_PASS \
    --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
    --build-arg DEE_REPO_URL=$DEE_REPO_URL \
-   -t grit/xplan-buildpack-deps:${BUILD_TAG} \
+   -t xplan-buildpack-deps:${BUILD_TAG} \
    xplan-buildpack-deps
 
 docker build \
    --build-arg BUILD_TAG=$BUILD_TAG \
+   -t xplan-init:${BUILD_TAG} \
    -t grit/xplan-init:${BUILD_TAG} \
    xplan-init
 
 docker build \
+   -t xplan-base-tomcat:${BUILD_TAG} \
    -t grit/xplan-base-tomcat:${BUILD_TAG} \
    xplan-base-tomcat
 
@@ -64,37 +66,29 @@ docker build \
    xplan-manager-web-docker
 
 docker build \
-   --build-arg DEE_REPO_USER=$DEE_REPO_USER \
-   --build-arg DEE_REPO_PASS=$DEE_REPO_PASS \
    --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
-   --build-arg DEE_REPO_URL=$DEE_REPO_URL \
+   --build-arg BUILD_TAG=$BUILD_TAG \
    --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
    -t grit/xplan-services-docker:${BUILD_TAG} \
    xplan-services-docker
 
 docker build \
-   --build-arg DEE_REPO_USER=$DEE_REPO_USER \
-   --build-arg DEE_REPO_PASS=$DEE_REPO_PASS \
    --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
-   --build-arg DEE_REPO_URL=$DEE_REPO_URL \
+   --build-arg BUILD_TAG=$BUILD_TAG \
    --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
    -t grit/xplan-api-docker:${BUILD_TAG} \
    xplan-api-docker
 
 docker build \
-   --build-arg DEE_REPO_USER=$DEE_REPO_USER \
-   --build-arg DEE_REPO_PASS=$DEE_REPO_PASS \
    --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
-   --build-arg DEE_REPO_URL=$DEE_REPO_URL \
+   --build-arg BUILD_TAG=$BUILD_TAG \
    --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
    -t grit/xplan-validator-web-docker:${BUILD_TAG} \
    xplan-validator-web-docker
 
 docker build \
-   --build-arg DEE_REPO_USER=$DEE_REPO_USER \
-   --build-arg DEE_REPO_PASS=$DEE_REPO_PASS \
    --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
-   --build-arg DEE_REPO_URL=$DEE_REPO_URL \
+   --build-arg BUILD_TAG=$BUILD_TAG \
    --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
    -t grit/xplan-services-inspireplu-docker:${BUILD_TAG} \
    xplan-services-inspireplu-docker
