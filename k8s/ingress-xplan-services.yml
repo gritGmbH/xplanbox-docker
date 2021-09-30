@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -13,34 +13,48 @@ metadata:
   name: xplan-services-ingress
 spec:
   rules:
-  - host: ${ENV_URL}
+  - host: atlas
     http:
       paths:
         - path: /xplan-wms/
+          pathType: Prefix
           backend:
-            serviceName: xplan-services
-            servicePort: 8080
+            service:
+              name: xplan-services
+              port: 
+                number: 8080
         - path: /xplan-wfs/
+          pathType: Prefix
           backend:
-            serviceName: xplan-services
-            servicePort: 8080
+            service:
+              name: xplan-services
+              port: 
+                number: 8080
         - path: /xplansyn-wfs/
+          pathType: Prefix
           backend:
-            serviceName: xplan-services
-            servicePort: 8080
+            service:
+              name: xplan-services
+              port: 
+                number: 8080
         - path: /xplan-inspireplu/
+          pathType: Prefix
           backend:
-            serviceName: xplan-plu-services
-            servicePort: 8080
+            service:
+              name: xplan-plu-services
+              port: 
+                number: 8080
         - path: /xplan-validator-web/
+          pathType: Prefix
           backend:
-            serviceName: xplan-validator
-            servicePort: 8080
+            service:
+              name: xplan-validator
+              port: 
+                number: 8080
         - path: /xplan-validator-wms/
+          pathType: Prefix
           backend:
-            serviceName: xplan-validator
-            servicePort: 8080
-  #tls:
-  #- hosts:
-  #  - ${ENV_URL}
-  #  secretName: ${ENV_URL}-le-production-cert
+            service:
+              name: xplan-validator
+              port: 
+                number: 8080

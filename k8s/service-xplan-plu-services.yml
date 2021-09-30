@@ -8,9 +8,11 @@ spec:
   selector:
     app: xplan-plu-services
   ports:
-    - protocol: TCP
+    - name: unsecure
+      protocol: TCP
       port: 8080
       targetPort: 8080
-    - protocol: TCP
+    - name: secure
+      protocol: TCP
       port: 8443
       targetPort: 8443

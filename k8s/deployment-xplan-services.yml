@@ -52,34 +52,31 @@ spec:
             - name: DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_DATABASE
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_USER
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_PASS
             - name: HOSTS
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_HOST
             - name: DB_PORT
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_PORT
       volumes:
         - name: xplan-workspace
           persistentVolumeClaim:
             claimName: xplan-workspace-pvc
-        - name: db-secret
-          secret:
-            secretName: xplan-pg-secrect
 #      imagePullSecrets:
 #        - name: ci-pull-secret

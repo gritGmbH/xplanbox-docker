@@ -8,4 +8,4 @@ data:
     # basemap
     #sed -i 's/^basemapUrl=.*$/basemapUrl=https:\/\/server.domain.de\/services?/' "/manager/managerWebConfiguration.properties"
     #sed -i 's/^basemapLayer=.*$/basemapLayer=1,2,3/' "/manager/managerWebConfiguration.properties"
-    #sed -i 's/^activatePublishingInspirePlu=.*$/activatePublishingInspirePlu=false/' "/manager/managerWebConfiguration.properties"
+    sed -i 's/^activatePublishingInspirePlu=.*$/activatePublishingInspirePlu=true/' "/manager/managerWebConfiguration.properties"

@@ -25,17 +25,17 @@ spec:
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_DATABASE
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_PASS
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
@@ -45,9 +45,5 @@ spec:
         - name: xplan-db
           persistentVolumeClaim:
             claimName: xplan-db-pvc
-        - name: db-secret
-          secret:
-            secretName: xplan-pg-secrect
-
 ##      imagePullSecrets:
 ##        - name: ci-pull-secret

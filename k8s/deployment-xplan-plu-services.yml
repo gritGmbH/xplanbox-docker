@@ -22,8 +22,6 @@ spec:
           env:
             - name: TZ
               value: "Europe/Berlin"
-            - name: JAVA_OPTS
-              value: "-Xmx$(MEMORY_REQUESTED_PLU)m"
           volumeMounts:
             - mountPath: /root/.deegree
               name: xplan-plu-workspace
@@ -37,7 +35,7 @@ spec:
               name: xplan-plu-workspace
               subPath: plu-workspace
         - name: init-xplan-plu-db
-          image: grit/xplan-startup:2020.2
+          image: grit/xplan-startup:4.2-SNAPSHOT
           command:
             [
               "/app/wait-for-postgres.sh",
@@ -50,34 +48,31 @@ spec:
             - name: DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-plu-secrect
                   key: DB_DATABASE
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-plu-secrect
                   key: DB_USER
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-plu-secrect
                   key: DB_PASS
             - name: HOSTS
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-plu-secrect
                   key: DB_HOST
             - name: DB_PORT
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-plu-secrect
                   key: DB_PORT
       volumes:
         - name: xplan-plu-workspace
           persistentVolumeClaim:
             claimName: xplan-plu-workspace-pvc
-        - name: db-secret
-          secret:
-            secretName: xplan-pg-plu-secrect
 #      imagePullSecrets:
 #        - name: ci-pull-secret

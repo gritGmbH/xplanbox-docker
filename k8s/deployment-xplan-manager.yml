@@ -58,36 +58,36 @@ spec:
             - mountPath: /scripts
               name: xplan-manager-cfg-script
         - name: init-xplan-db
-          image: grit/xplan-startup:2020.2
+          image: grit/xplan-startup:4.2-SNAPSHOT
           command: ["/app/wait-for-postgres.sh", "-t", "0"]
           env:
             - name: DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_DATABASE
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_USER
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_PASS
             - name: HOSTS
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_HOST
             - name: DB_PORT
               valueFrom:
                 secretKeyRef:
-                  name: db-secret
+                  name: xplan-pg-secrect
                   key: DB_PORT
         - name: init-services-wms
-          image: grit/xplan-startup:2020.2
+          image: grit/xplan-startup:4.2-SNAPSHOT
           command:
             [
               "/app/wait-for-url.sh",
@@ -97,7 +97,7 @@ spec:
               "xplan-services:8080/xplan-wms/",
             ]
         - name: init-services-syn-wfs
-          image: grit/xplan-startup:2020.2
+          image: grit/xplan-startup:4.2-SNAPSHOT
           command:
             [
               "/app/wait-for-url.sh",
@@ -107,7 +107,7 @@ spec:
               "xplan-services:8080/xplansyn-wfs/",
             ]
         - name: init-services-wfs
-          image: grit/xplan-startup:2020.2
+          image: grit/xplan-startup:4.2-SNAPSHOT
           command:
             [
               "/app/wait-for-url.sh",
@@ -126,8 +126,5 @@ spec:
         - name: xplan-manager-cfg-script
           configMap:
             name: xplan-manager-cfg-script
-        - name: db-secret
-          secret:
-            secretName: xplan-pg-secrect
 #      imagePullSecrets:
 #        - name: ci-pull-secret
