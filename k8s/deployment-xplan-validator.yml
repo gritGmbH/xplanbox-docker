@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: xplan-validator
-          image: grit/xplan-validator-web-docker:4.2-SNAPSHOT
+          image: grit/xplan-validator-web-docker:4.2
           env:
             - name: TZ
               value: "Europe/Berlin"
@@ -33,7 +33,7 @@ spec:
               subPath: val-config
       initContainers:
         - name: init-volume-ws
-          image: grit/xplan-init:4.2-SNAPSHOT
+          image: grit/xplan-init:4.2
           volumeMounts:
             - mountPath: /dst/val-ws
               name: xplan-val-workspace

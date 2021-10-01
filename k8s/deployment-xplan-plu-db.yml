@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: xplan-plu-db
-          image: grit/xplan-db-inspireplu-docker:4.2-SNAPSHOT
+          image: grit/xplan-db-inspireplu-docker:4.2
           env:
             - name: TZ
               value: "Europe/Berlin"
