@@ -39,9 +39,9 @@ pipeline {
         script {
           timeStamp = (new Date()).format("yyyy-MM-dd'T'HH:mm")
           repoCreds = "--build-arg DEE_REPO_USER=$DEE_REPO_USR --build-arg DEE_REPO_PASS=$DEE_REPO_PSW"
-          buildArgs = "--pull --build-arg XPLANBOX_VERSION=${gitBranchShort} --build-arg GIT_COMMIT=${GIT_COMMIT} --build-arg XPLANBOX_BUILD=${timeStamp}"
-          dockerPrepare01 = docker.build( "${prepare01}:${dockerTagLong}", "${buildArgs} ${repoCreds} ${prepare01}" )
-          dockerPrepare02 = docker.build( "${prepare02}:${dockerTagLong}", "${buildArgs} ${repoCreds} ${prepare02}" )
+          buildArgs = "--build-arg XPLANBOX_VERSION=${gitBranchShort} --build-arg GIT_COMMIT=${GIT_COMMIT} --build-arg XPLANBOX_BUILD=${timeStamp} --build-arg BUILD_TAG=${dockerTagLong}"
+          dockerPrepare01 = docker.build( "${prepare01}:${dockerTagLong}", "--pull ${buildArgs} ${repoCreds} ${prepare01}" )
+          dockerPrepare02 = docker.build( "${prepare02}:${dockerTagLong}", "--pull ${buildArgs} ${repoCreds} ${prepare02}" )
           dockerPrepare03 = docker.build( "${prepare03}:${dockerTagLong}", "${buildArgs} ${repoCreds} ${prepare03}" )
         }
       }
