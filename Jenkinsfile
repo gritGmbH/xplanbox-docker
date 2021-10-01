@@ -9,14 +9,14 @@ pipeline {
     dockerTagLong = ''
     prepare01 = 'xplan-base-tomcat'
     prepare02 = 'xplan-buildpack-deps'
-    image01 = 'xplan-api-docker'
+    image01 = 'xplan-init'
     image02 = 'xplan-db-docker'
     image03 = 'xplan-db-inspireplu-docker'
     image04 = 'xplan-manager-web-docker'
     image05 = 'xplan-services-docker'
     image06 = 'xplan-services-inspireplu-docker'
     image07 = 'xplan-validator-web-docker'
-    image08 = 'xplan-init'
+    image08 = 'xplan-api-docker'
     image09 = 'xplan-startup'
     DEE_REPO = credentials('dee.nexus.developer')
   }
