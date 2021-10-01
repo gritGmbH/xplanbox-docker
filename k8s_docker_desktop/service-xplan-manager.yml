@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: xplan-manager
+  labels:
+    app: xplan-manager
+spec:
+  selector:
+    app: xplan-manager
+  ports:
+    - name: unsecure
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: secure
+      protocol: TCP
+      port: 8443
+      targetPort: 8443

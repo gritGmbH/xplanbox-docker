@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xplan-plu-db
+  labels:
+    app: xplan-plu-db
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: xplan-plu-db
+  template:
+    metadata:
+      labels:
+        app: xplan-plu-db
+    spec:
+      containers:
+        - name: xplan-plu-db
+          image: grit/xplan-db-inspireplu-docker:4.2
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-plu-secrect
+                  key: DB_DATABASE
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-plu-secrect
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-plu-secrect
+                  key: DB_PASS
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: xplan-plu-db
+              subPath: data
+      volumes:
+        - name: xplan-plu-db
+          persistentVolumeClaim:
+            claimName: xplan-plu-db-pvc
+#      imagePullSecrets:
+#        - name: ci-pull-secret

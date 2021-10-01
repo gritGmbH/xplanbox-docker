@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xplan-services
+  labels:
+    app: xplan-services
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: xplan-services
+  template:
+    metadata:
+      labels:
+        app: xplan-services
+    spec:
+      #affinity:
+      #  podAffinity:
+      #    # TRICKY on restart place pod beside xplan-manager to ensure same worker as before
+      #    preferredDuringSchedulingIgnoredDuringExecution:
+      #      - weight: 100
+      #        podAffinityTerm:
+      #          labelSelector:
+      #            matchExpressions:
+      #            - key: app
+      #              operator: In
+      #              values:
+      #              - xplan-manager
+      #          topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: xplan-services
+          image: grit/xplan-services-docker:4.2
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+            #- name: JAVA_OPTS
+            #  value: "-Xmx8192m"
+          volumeMounts:
+            - mountPath: /root/.deegree
+              name: xplan-workspace
+              readOnly: true
+      initContainers:
+        - name: init-volume
+          image: grit/xplan-init:4.2
+          volumeMounts:
+            - mountPath: /dst/srv-ws
+              name: xplan-workspace
+        - name: init-db-connection
+          image: grit/xplan-init:4.2
+          command: ["/bin/bash", "/tpl/database.sh"]
+          env:
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_DATABASE
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_PASS
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_PORT
+          volumeMounts:
+            - mountPath: /work/srv-ws
+              name: xplan-workspace
+        - name: init-xplan-db
+          image: grit/xplan-startup:4.2
+          command: ["/app/wait-for-postgres.sh", "-t", "0"]
+          env:
+            - name: DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_DATABASE
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_PASS
+            - name: HOSTS
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_PORT
+      volumes:
+        - name: xplan-workspace
+          persistentVolumeClaim:
+            claimName: xplan-workspace-pvc
+#      imagePullSecrets:
+#        - name: ci-pull-secret
