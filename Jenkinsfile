@@ -9,15 +9,16 @@ pipeline {
     dockerTagLong = ''
     prepare01 = 'xplan-base-tomcat'
     prepare02 = 'xplan-buildpack-deps'
-    image01 = 'xplan-init'
+    prepare03 = 'xplan-init'
+    image01 = 'xplan-api-docker'
     image02 = 'xplan-db-docker'
     image03 = 'xplan-db-inspireplu-docker'
     image04 = 'xplan-manager-web-docker'
     image05 = 'xplan-services-docker'
     image06 = 'xplan-services-inspireplu-docker'
     image07 = 'xplan-validator-web-docker'
-    image08 = 'xplan-api-docker'
-    image09 = 'xplan-startup'
+    image08 = 'xplan-startup'
+    image09 = 'xplan-init'
     DEE_REPO = credentials('dee.nexus.developer')
   }
   agent any
@@ -40,7 +41,8 @@ pipeline {
           repoCreds = "--build-arg DEE_REPO_USER=$DEE_REPO_USR --build-arg DEE_REPO_PASS=$DEE_REPO_PSW"
           buildArgs = "--pull --build-arg XPLANBOX_VERSION=${gitBranchShort} --build-arg GIT_COMMIT=${GIT_COMMIT} --build-arg XPLANBOX_BUILD=${timeStamp}"
           dockerPrepare01 = docker.build( "${prepare01}:${dockerTagLong}", "${buildArgs} ${repoCreds} ${prepare01}" )
-          dockerPrepare01 = docker.build( "${prepare02}:${dockerTagLong}", "${buildArgs} ${repoCreds} ${prepare02}" )
+          dockerPrepare02 = docker.build( "${prepare02}:${dockerTagLong}", "${buildArgs} ${repoCreds} ${prepare02}" )
+          dockerPrepare03 = docker.build( "${prepare03}:${dockerTagLong}", "${buildArgs} ${repoCreds} ${prepare03}" )
         }
       }
     }
