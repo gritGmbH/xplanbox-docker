@@ -3,7 +3,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: xplan-db-pvc
 spec:
-  storageClassName: ssd
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem

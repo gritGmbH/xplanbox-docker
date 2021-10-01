@@ -32,8 +32,8 @@ spec:
           env:
             - name: TZ
               value: "Europe/Berlin"
-            #- name: JAVA_OPTS
-            #  value: "-Xmx8192m -DXPLANBOX_CONFIG=/root/xplan-manager-config/"
+            - name: JAVA_OPTS
+              value: "-Xmx2048m -DXPLANBOX_CONFIG=/root/xplan-manager-config/"
           volumeMounts:
             - mountPath: /root/.deegree
               name: xplan-workspace

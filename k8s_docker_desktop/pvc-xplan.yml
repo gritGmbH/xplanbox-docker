@@ -3,7 +3,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: xplan-workspace-pvc
 spec:
-  storageClassName: nfs
   accessModes:
     - ReadWriteMany
   volumeMode: Filesystem
@@ -16,7 +15,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: xplan-val-workspace-pvc
 spec:
-  storageClassName: hdd
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
@@ -29,7 +27,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: xplan-config-pvc
 spec:
-  storageClassName: hdd
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
