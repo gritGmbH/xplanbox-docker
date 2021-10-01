@@ -32,6 +32,8 @@ spec:
           env:
             - name: TZ
               value: "Europe/Berlin"
+            #- name: JAVA_OPTS
+            #  value: "-Xmx8192m -DXPLANBOX_CONFIG=/root/xplan-manager-config/"
           volumeMounts:
             - mountPath: /root/.deegree
               name: xplan-workspace
@@ -46,6 +48,67 @@ spec:
             - mountPath: /dst/srv-ws
               name: xplan-workspace
             - mountPath: /dst/mng-cfg
+              name: xplan-config
+              subPath: manager
+        - name: init-db-connection
+          image: grit/xplan-init:4.2-SNAPSHOT
+          command: ["/bin/bash", "/tpl/database.sh"]
+          env:
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_DATABASE
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_PASS
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_PORT
+            # only needed with PLU
+            - name: PLUDB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-plu-secrect
+                  key: DB_DATABASE
+            - name: PLUDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-plu-secrect
+                  key: DB_USER
+            - name: PLUDB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-plu-secrect
+                  key: DB_PASS
+            - name: PLUDB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-plu-secrect
+                  key: DB_HOST
+            - name: PLUDB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-plu-secrect
+                  key: DB_PORT
+          volumeMounts:
+            - mountPath: /work/srv-ws
+              name: xplan-workspace
+            - mountPath: /work/mng-cfg
               name: xplan-config
               subPath: manager
         - name: init-config-manager

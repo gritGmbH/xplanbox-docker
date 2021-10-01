@@ -22,6 +22,8 @@ spec:
           env:
             - name: TZ
               value: "Europe/Berlin"
+            #- name: JAVA_OPTS
+            #  value: "-Xmx8192m -DXPLANBOX_CONFIG=/root/xplan-validator-config/"
           volumeMounts:
             - mountPath: /root/.deegree
               name: xplan-val-workspace

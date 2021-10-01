@@ -28,6 +28,7 @@ PLUDB_CON_MAX=${PLUDB_CON_MAX:-10}
 # service connection
 for i in $WS/*/jdbc/xplan.xml $WS/*/jdbc/vfdb.xml
 do
+    test -e "$i" || continue
     echo "modify $i"
     xmlstarlet ed -L \
         -u "//*[local-name()='Property' and @name='url']/@value" -v "jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}${DB_EXTRA}" \
@@ -42,6 +43,7 @@ done
 # plu connection
 for i in $PLUSRV/*/jdbc/*.xml  $WS/*/jdbc/inspireplu.xml
 do
+    test -e "$i" || continue
     echo "modify $i"
     xmlstarlet ed -L \
         -u "//*[local-name()='Property' and @name='url']/@value" -v "jdbc:postgresql://${PLUDB_HOST}:${PLUDB_PORT}/${PLUDB_DATABASE}${PLUDB_EXTRA}" \

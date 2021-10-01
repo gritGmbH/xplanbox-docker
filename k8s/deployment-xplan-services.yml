@@ -35,6 +35,8 @@ spec:
           env:
             - name: TZ
               value: "Europe/Berlin"
+            #- name: JAVA_OPTS
+            #  value: "-Xmx8192m"
           volumeMounts:
             - mountPath: /root/.deegree
               name: xplan-workspace
@@ -44,6 +46,38 @@ spec:
           image: grit/xplan-init:4.2-SNAPSHOT
           volumeMounts:
             - mountPath: /dst/srv-ws
+              name: xplan-workspace
+        - name: init-db-connection
+          image: grit/xplan-init:4.2-SNAPSHOT
+          command: ["/bin/bash", "/tpl/database.sh"]
+          env:
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_DATABASE
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_PASS
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: xplan-pg-secrect
+                  key: DB_PORT
+          volumeMounts:
+            - mountPath: /work/srv-ws
               name: xplan-workspace
         - name: init-xplan-db
           image: grit/xplan-startup:4.2-SNAPSHOT

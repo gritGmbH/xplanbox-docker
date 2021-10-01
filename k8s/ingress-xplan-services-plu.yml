@@ -9,31 +9,17 @@ metadata:
     # enforce http to https redirection for authentication
     #nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   labels:
-    app: xplan-services-ingress
-  name: xplan-services-ingress
+    app: xplan-services-plu-ingress
+  name: xplan-services-plu-ingress
 spec:
   rules:
   - host: atlas
     http:
       paths:
-        - path: /xplan-wms/services
+        - path: /xplan-inspireplu/services
           pathType: Prefix
           backend:
             service:
-              name: xplan-services
-              port: 
-                number: 8080
-        - path: /xplan-wfs/services
-          pathType: Prefix
-          backend:
-            service:
-              name: xplan-services
-              port: 
-                number: 8080
-        - path: /xplansyn-wfs/services
-          pathType: Prefix
-          backend:
-            service:
-              name: xplan-services
+              name: xplan-plu-services
               port: 
                 number: 8080

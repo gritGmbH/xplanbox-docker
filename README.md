@@ -4,6 +4,16 @@
 docker cp 33db:/docker-entrypoint-initdb.d/setup_db.sh xplan-db-docker/setup.sh
 
 
+# Docker Desktop (Windows)
+
+Prepare nginx ingress with:
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.2/deploy/static/provider/cloud/deploy.yaml
+```
+
+Note: May require to set -Xmx Parameter with smaler default value for deployments
+
 # Build commands locally
 
 ```bash
@@ -29,9 +39,19 @@ docker build \
 
 docker build \
    --build-arg BUILD_TAG=$BUILD_TAG \
+   --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
+   --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
    -t xplan-init:${BUILD_TAG} \
    -t grit/xplan-init:${BUILD_TAG} \
    xplan-init
+
+docker build \
+   --build-arg BUILD_TAG=$BUILD_TAG \
+   --build-arg XPLANBOX_VERSION=$XPLANBOX_VERSION \
+   --build-arg XPLANBOX_BUILD=$(date --rfc-3339=seconds | sed 's/ /T/') \
+   -t xplan-startup:${BUILD_TAG} \
+   -t grit/xplan-startup:${BUILD_TAG} \
+   xplan-startup
 
 docker build \
    -t xplan-base-tomcat:${BUILD_TAG} \

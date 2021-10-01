@@ -32,6 +32,10 @@ RUN echo "Extract and Cleanup" \
 
 FROM buildpack-deps:stable-curl
 
+ARG XPLANBOX_BUILD
+ARG XPLANBOX_VERSION
+ARG GIT_COMMIT=0
+
 LABEL	maintainer="graphische Informationstechnik - Beratungsgesellschaft mbH <info@grit.de>" \
 	org.opencontainers.image.title="deegree-core WMS/WFS mit Security" \
 	org.opencontainers.image.description="deegree Enterprise Edition - Init Empty Config" \
