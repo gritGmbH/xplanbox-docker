@@ -120,6 +120,14 @@ spec:
               subPath: manager
             - mountPath: /scripts
               name: xplan-manager-cfg-script
+            - mountPath: /workspace
+              name: xplan-workspace
+          env:
+            - name: BBOX_CACHE
+              valueFrom:
+                configMapKeyRef:
+                  name: xplan-manager-cfg-script
+                  key: BBOX_CACHE
         - name: init-xplan-db
           image: grit/xplan-startup:4.2
           command: ["/app/wait-for-postgres.sh", "-t", "0"]

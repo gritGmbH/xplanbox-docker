@@ -3,9 +3,33 @@ kind: ConfigMap
 metadata:
   name: xplan-manager-cfg-script
 data:
+  BBOX_CACHE: 4326,51.600000,7.200000,52.100000,7.900000
   configure_manager.sh: |
     #!/bin/sh
     # basemap
     #sed -i 's/^basemapUrl=.*$/basemapUrl=https:\/\/server.domain.de\/services?/' "/manager/managerWebConfiguration.properties"
     #sed -i 's/^basemapLayer=.*$/basemapLayer=1,2,3/' "/manager/managerWebConfiguration.properties"
-    sed -i 's/^activatePublishingInspirePlu=.*$/activatePublishingInspirePlu=true/' "/manager/managerWebConfiguration.properties"
+    #
+    sed -i 's/^activatePublishingInspirePlu=.*$/activatePublishingInspirePlu=false/' "/manager/managerWebConfiguration.properties"
+    #
+    # change bbox (use value von ENV variable BBOX_CACHE in format epsg-code,minx,miny,maxx,maxy )
+    find . -name "bbox_cache.properties" -type f -fprint /dev/stdout -exec sed -ri 's/^([^=]+=epsg\\):([^\n]*)$/\1:'$BBOX_CACHE'/' {} \;
+    #
+    # Dateien kopieren aus Volumen (Ziel Quelle)
+    # cp -rvft /workspace/ /template/*
+    # Dateien einzeln kopieren ()
+    cp -vfT /scripts/validatorConfiguration.properties /manager/validatorConfiguration.properties
+  validatorConfiguration.properties: |
+    # Aus CONFIG_MAP UEBERSCHRIEBEN !!
+    #
+    # Verzeichnis in dem die Validierungsergebnisse abgelegt werden.
+    # Default: tmp-Verzeichnis
+    validationReportDirectory=
+
+    # Verzeichnis in dem die semantischen Validierungsregel liegen, die für die Validierung verwendet werden sollen.
+    # Default: Der interne Regelsatz wird verwendet
+    validationRulesDirectory=
+
+    # URL des XPlanValidatorWMS Endpunkts für die Anzeige der Kartenvorschau
+    # Default: keine URL, die Kartenvorschau ist nicht verfügbar
+    validatorWmsEndpoint=/xplan-validator-wms/services/wms
