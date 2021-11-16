@@ -9,18 +9,18 @@ COPY copy.sh /tpl/copy.sh
 
 RUN echo "Extract and Cleanup" \
 	&& mkdir -p /work/srv-ws  \
-	&& unzip -d /work/srv-ws/xplan-wfs-workspace /dist/xplan-workspaces-xplan-wfs-workspace-default.zip \
-	&& unzip -d /work/srv-ws/xplansyn-wfs-workspace /dist/xplan-workspaces-xplansyn-wfs-workspace-default.zip \
-	&& unzip -d /work/srv-ws/xplansyn-wms-workspace /dist/xplan-workspaces-xplansyn-wms-workspace-default.zip \
-	&& unzip -d /work/srv-ws/xplan-manager-workspace /dist/xplan-workspaces-xplan-manager-workspace-default.zip \
+	&& unzip -d /work/srv-ws/xplan-wfs-workspace /dist/xplan-workspaces-xplan-wfs-workspace.zip \
+	&& unzip -d /work/srv-ws/xplansyn-wfs-workspace /dist/xplan-workspaces-xplansyn-wfs-workspace.zip \
+	&& unzip -d /work/srv-ws/xplansyn-wms-workspace /dist/xplan-workspaces-xplansyn-wms-workspace.zip \
+	&& unzip -d /work/srv-ws/xplan-manager-workspace /dist/xplan-workspaces-xplan-manager-workspace.zip \
 	&& mkdir -p /work/mng-cfg  \
 	&& unzip -d /work/mng-cfg /dist/xplan-manager-config-default.zip \
 	&& mkdir -p /work/val-cfg  \
 	&& unzip -d /work/val-cfg /dist/xplan-validator-config.zip \
 	&& mkdir -p /work/val-ws  \
-	&& unzip -d /work/val-ws/xplan-validator-wms-workspace /dist/xplan-workspaces-xplan-validator-wms-workspace-default.zip \
+	&& unzip -d /work/val-ws/xplan-validator-wms-workspace /dist/xplan-workspaces-xplan-validator-wms-workspace.zip \
 	&& mkdir -p /work/plu-ws  \
-	&& unzip -d /work/plu-ws/xplan-inspireplu-workspace /dist/xplan-workspaces-xplan-inspireplu-workspace-default.zip \
+	&& unzip -d /work/plu-ws/xplan-inspireplu-workspace /dist/xplan-workspaces-xplan-inspireplu-workspace.zip \
 	&& bash /config.sh \
 	&& bash /tpl/database.sh \
 	&& cd /work/srv-ws && tar -cvzf /tpl/srv-ws.tgz . \

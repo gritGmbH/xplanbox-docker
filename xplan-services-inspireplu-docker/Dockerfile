@@ -1,5 +1,7 @@
-ARG BUILD_TAG
+ ARG BUILD_TAG
+FROM xplan-base-tomcat:${BUILD_TAG} AS tomcat
 
+ARG BUILD_TAG
 FROM xplan-buildpack-deps:${BUILD_TAG} AS builder
 
 COPY patches /patches
