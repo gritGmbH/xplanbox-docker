@@ -29,7 +29,7 @@ pipeline {
         checkout scm
         script {
           gitBranchShort = "${GIT_BRANCH.lastIndexOf('/') > -1 ? GIT_BRANCH.substring(GIT_BRANCH.lastIndexOf('/') + 1) : GIT_BRANCH}"
-          dockerTagShort = "${gitBranchShort}"
+          dockerTagShort = "${gitBranchShort.indexOf('-') > -1 ? gitBranchShort.substring(0, gitBranchShort.indexOf('-')) : gitBranchShort}"
           dockerTagLong  = "${gitBranchShort}-${GIT_COMMIT[0..7]}-${BUILD_NUMBER}"
         }
       }
