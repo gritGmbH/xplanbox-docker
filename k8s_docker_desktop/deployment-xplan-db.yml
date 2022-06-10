@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: xplan-db
-          image: grit/xplan-db-docker:4.2
+          image: grit/xplan-db-docker:5.0.2-a08369d7-1-SNAPSHOT
           env:
             - name: TZ
               value: "Europe/Berlin"

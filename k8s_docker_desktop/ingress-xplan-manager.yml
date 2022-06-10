@@ -26,3 +26,17 @@ spec:
             name: xplan-manager
             port:
               number: 8080
+      - path: /xPlanBox-Benutzerhandbuch/
+        pathType: Prefix
+        backend:
+          service:
+            name: xplan-manager
+            port:
+              number: 8080
+      - path: /xPlanBox-Betriebshandbuch/
+        pathType: Prefix
+        backend:
+          service:
+            name: xplan-manager
+            port:
+              number: 8080

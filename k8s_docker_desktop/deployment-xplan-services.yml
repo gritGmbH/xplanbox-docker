@@ -31,7 +31,7 @@ spec:
       #          topologyKey: "kubernetes.io/hostname"
       containers:
         - name: xplan-services
-          image: grit/xplan-services-docker:4.2
+          image: grit/xplan-services-docker:5.0.2-a08369d7-1-SNAPSHOT
           env:
             - name: TZ
               value: "Europe/Berlin"
@@ -43,12 +43,12 @@ spec:
               readOnly: true
       initContainers:
         - name: init-volume
-          image: grit/xplan-init:4.2
+          image: grit/xplan-init:5.0.2-a08369d7-1-SNAPSHOT
           volumeMounts:
             - mountPath: /dst/srv-ws
               name: xplan-workspace
         - name: init-db-connection
-          image: grit/xplan-init:4.2
+          image: grit/xplan-init:5.0.2-a08369d7-1-SNAPSHOT
           command: ["/bin/bash", "/tpl/database.sh"]
           env:
             - name: DB_DATABASE
@@ -80,7 +80,7 @@ spec:
             - mountPath: /work/srv-ws
               name: xplan-workspace
         - name: init-xplan-db
-          image: grit/xplan-startup:4.2
+          image: grit/xplan-startup:5.0.2-a08369d7-1-SNAPSHOT
           command: ["/app/wait-for-postgres.sh", "-t", "0"]
           env:
             - name: DATABASE

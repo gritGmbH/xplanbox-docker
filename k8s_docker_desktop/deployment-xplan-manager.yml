@@ -28,7 +28,7 @@ spec:
       #        topologyKey: "kubernetes.io/hostname"
       containers:
         - name: xplan-manager
-          image: grit/xplan-manager-web-docker:4.2
+          image: grit/xplan-manager-web-docker:5.0.2-a08369d7-1-SNAPSHOT
           env:
             - name: TZ
               value: "Europe/Berlin"
@@ -43,7 +43,7 @@ spec:
               readOnly: true
       initContainers:
         - name: init-volume-ws
-          image: grit/xplan-init:4.2
+          image: grit/xplan-init:5.0.2-a08369d7-1-SNAPSHOT
           volumeMounts:
             - mountPath: /dst/srv-ws
               name: xplan-workspace
@@ -51,7 +51,7 @@ spec:
               name: xplan-config
               subPath: manager
         - name: init-db-connection
-          image: grit/xplan-init:4.2
+          image: grit/xplan-init:5.0.2-a08369d7-1-SNAPSHOT
           command: ["/bin/bash", "/tpl/database.sh"]
           env:
             - name: DB_DATABASE
@@ -112,7 +112,7 @@ spec:
               name: xplan-config
               subPath: manager
         - name: init-config-manager
-          image: grit/xplan-init:4.2
+          image: grit/xplan-init:5.0.2-a08369d7-1-SNAPSHOT
           command: ["sh", "/scripts/configure_manager.sh"]
           volumeMounts:
             - mountPath: /manager
@@ -129,7 +129,7 @@ spec:
                   name: xplan-manager-cfg-script
                   key: BBOX_CACHE
         - name: init-xplan-db
-          image: grit/xplan-startup:4.2
+          image: grit/xplan-startup:5.0.2-a08369d7-1-SNAPSHOT
           command: ["/app/wait-for-postgres.sh", "-t", "0"]
           env:
             - name: DATABASE
@@ -158,7 +158,7 @@ spec:
                   name: xplan-pg-secrect
                   key: DB_PORT
         - name: init-services-wms
-          image: grit/xplan-startup:4.2
+          image: grit/xplan-startup:5.0.2-a08369d7-1-SNAPSHOT
           command:
             [
               "/app/wait-for-url.sh",
@@ -168,7 +168,7 @@ spec:
               "xplan-services:8080/xplan-wms/",
             ]
         - name: init-services-syn-wfs
-          image: grit/xplan-startup:4.2
+          image: grit/xplan-startup:5.0.2-a08369d7-1-SNAPSHOT
           command:
             [
               "/app/wait-for-url.sh",
@@ -178,7 +178,7 @@ spec:
               "xplan-services:8080/xplansyn-wfs/",
             ]
         - name: init-services-wfs
-          image: grit/xplan-startup:4.2
+          image: grit/xplan-startup:5.0.2-a08369d7-1-SNAPSHOT
           command:
             [
               "/app/wait-for-url.sh",

@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: xplan-plu-services
-          image: grit/xplan-services-inspireplu-docker:4.2
+          image: grit/xplan-services-inspireplu-docker:5.0.2-a08369d7-1-SNAPSHOT
           env:
             - name: TZ
               value: "Europe/Berlin"
@@ -31,13 +31,13 @@ spec:
               readOnly: true
       initContainers:
         - name: init-volume-plu
-          image: grit/xplan-init:4.2
+          image: grit/xplan-init:5.0.2-a08369d7-1-SNAPSHOT
           volumeMounts:
             - mountPath: /dst/plu-ws
               name: xplan-plu-workspace
               subPath: plu-workspace
         - name: init-db-connection
-          image: grit/xplan-init:4.2
+          image: grit/xplan-init:5.0.2-a08369d7-1-SNAPSHOT
           command: ["/bin/bash", "/tpl/database.sh"]
           env:
             - name: PLUDB_DATABASE
@@ -70,7 +70,7 @@ spec:
               name: xplan-plu-workspace
               subPath: plu-workspace
         - name: init-xplan-plu-db
-          image: grit/xplan-startup:4.2
+          image: grit/xplan-startup:5.0.2-a08369d7-1-SNAPSHOT
           command: ["/app/wait-for-postgres.sh", "-t", "0"]
           env:
             - name: DATABASE
