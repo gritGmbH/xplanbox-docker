@@ -25,8 +25,8 @@ export DEE_REPO_USER=user
 export DEE_REPO_PASS=pass
 #export DEE_REPO_URL=http://192.168.100.42:8088
 #export DEE_REPO_URL=http://194.115.58.42:8088
-export DEE_REPO_URL=http://maven.werne.grit.de/artifactory/ext-release-local
-export XPLANBOX_VERSION=4.2
+export DEE_REPO_URL=http://maven.werne.grit.de/artifactory/xplanbox-repos
+export XPLANBOX_VERSION=5.0.2-a08369d7-1
 export BUILD_SUFFIX=-SNAPSHOT
 export BUILD_TAG=${XPLANBOX_VERSION}${BUILD_SUFFIX}
 

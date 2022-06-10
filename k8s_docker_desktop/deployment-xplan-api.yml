@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xplan-api
+  labels:
+    app: xplan-api
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: xplan-api
+  template:
+    metadata:
+      labels:
+        app: xplan-api
+    spec:
+      #affinity:
+      #  podAffinity:
+      #    requiredDuringSchedulingIgnoredDuringExecution:
+      #      - labelSelector:
+      #          matchExpressions:
+      #            - key: app
+      #              operator: In
+      #              values:
+      #              - xplan-services
+      #        topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: xplan-manager
+          image: grit/xplan-api-docker:5.0.2-a08369d7-1-SNAPSHOT
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+            - name: JAVA_OPTS
+              value: "-Xmx2048m -DXPLANBOX_CONFIG=/root/xplan-manager-config/"
+          volumeMounts:
+            - mountPath: /root/.deegree
+              name: xplan-workspace
+            - mountPath: /root/xplan-manager-config
+              name: xplan-config
+              subPath: manager
+              readOnly: true
+            # Disable Validator API, as it is not compatible to current volume layout
+            - mountPath: /usr/local/tomcat/webapps/xplan-api-validator
+              name: empty-webapp-xplan-api-validator
+      initContainers:
+        # ensure manager to be up, so that workspace is alread configured
+        - name: init-wait-for-manager
+          image: grit/xplan-startup:5.0.2-a08369d7-1-SNAPSHOT
+          command:
+            [
+              "/app/wait-for-url.sh",
+              "-t",
+              "0",
+              "-u",
+              "xplan-manager:8080/xplanroot.css",
+            ]
+      volumes:
+        - name: xplan-workspace
+          persistentVolumeClaim:
+            claimName: xplan-workspace-pvc
+        - name: xplan-config
+          persistentVolumeClaim:
+            claimName: xplan-config-pvc
+        - name: empty-webapp-xplan-api-validator
+          emptyDir: {}
+#      imagePullSecrets:
+#        - name: ci-pull-secret

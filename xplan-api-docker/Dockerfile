@@ -8,10 +8,7 @@ RUN echo "Extract and Cleanup" \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplan-api-validator /dist/xplan-api-validator.war \
 	&& unzip -d /target/ /hale-cli.zip \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan*/WEB-INF/lib \
-	&& sed -ri "s/^(log4j\.rootLogger)=([^\n]*)$/\1=INFO, stdout/" /target/usr/local/tomcat/webapps/xplan-api-manager/WEB-INF/classes/log4j.properties \
-	&& sed -ri "s/^(log4j\.appender\.stdout\.Threshold)=([^\n]*)$/\1=INFO/" /target/usr/local/tomcat/webapps/xplan-api-manager/WEB-INF/classes/log4j.properties \
-	&& sed -ri "s/^(log4j\.rootLogger)=([^\n]*)$/\1=INFO, stdout/" /target/usr/local/tomcat/webapps/xplan-api-validator/WEB-INF/classes/log4j.properties \
-	&& sed -ri "s/^(log4j\.appender\.stdout\.Threshold)=([^\n]*)$/\1=WARN/" /target/usr/local/tomcat/webapps/xplan-api-validator/WEB-INF/classes/log4j.properties \
+	&& bash /update-logging.sh \
 	&& echo "Done"
 
 # NOTE: See used variant in xplan-base-tomcat

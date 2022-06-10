@@ -12,8 +12,7 @@ RUN echo "Extract and Cleanup" \
 	&& mkdir -p /target/usr/local/tomcat/webapps \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplan-inspireplu /dist/xplan-inspireplu.war \
     && patch -d /target -p1  </patches/web.xml.patch \
-	&& sed -ri "s/^(log4j\.rootLogger)=([^\n]*)$/\1=INFO, stdout/" /target/usr/local/tomcat/webapps/*/WEB-INF/classes/log4j.properties \
-	&& sed -ri "s/^(log4j\.appender\.stdout\.Threshold)=([^\n]*)$/\1=WARN/" /target/usr/local/tomcat/webapps/*/WEB-INF/classes/log4j.properties \
+	&& bash /update-logging.sh \
 	&& echo "Done"
 
 # NOTE: See used variant in xplan-base-tomcat

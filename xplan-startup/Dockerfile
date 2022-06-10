@@ -3,7 +3,7 @@
 #   or
 #  docker build --build-arg DEE_VERSION --build-arg DEE_BUILD
 #
-FROM eclipse-temurin:8-jdk-focal
+FROM eclipse-temurin:11-jdk-focal
 
 ARG XPLANBOX_BUILD
 ARG XPLANBOX_VERSION
