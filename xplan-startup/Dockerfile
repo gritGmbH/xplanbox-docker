@@ -8,12 +8,13 @@ FROM eclipse-temurin:11-jdk-focal
 ARG XPLANBOX_BUILD
 ARG XPLANBOX_VERSION
 
-LABEL	maintainer="Stephan Reichhelm <reichhelm@grit.de>" \
-	org.opencontainers.image.title="Utilities - Startup" \
-	org.opencontainers.image.description="deegree Enterprise Edition - Startup Handling" \
-	org.opencontainers.image.vendor="graphische Informationstechnik - Beratungsgesellschaft mbH" \
+# Label not set:
+# maintainer="..."
+# org.opencontainers.image.vendor="..."
+LABEL	org.opencontainers.image.title="Utilities - Startup" \
+	org.opencontainers.image.description="Startup Handling" \
 	org.opencontainers.image.created="${XPLANBOX_BUILD}" \
-	org.opencontainers.image.url="https://www.deegree-enterprise.de/" \
+	org.opencontainers.image.url="https://gitlab.opencode.de/diplanung/ozgxplanung" \
 	org.opencontainers.image.version="${XPLANBOX_VERSION}"
 
 ADD app.tar.gz /
