@@ -51,8 +51,8 @@ ARG XPLANBOX_VERSION
 RUN echo "Downloading files from repo and extract it" \
 	&& mkdir -p /dist \
 	&& FILE_VERSION=${XPLANBOX_VERSION} \
-	&& bash -c '[[ "${XPLANBOX_VERSION}" == *-SNAPSHOT ]]' && wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS -O /tmp/maven-metadata.xml "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-api-manager/${XPLANBOX_VERSION}/maven-metadata.xml" \
-	&& bash -c '[[ "${XPLANBOX_VERSION}" == *-SNAPSHOT ]]' && FILE_VERSION=$(xmlstarlet sel -t -m "metadata/versioning/snapshotVersions" -c "./snapshotVersion[1]/value/text()" /tmp/maven-metadata.xml ) \
+	&& bash -c '[[ "${XPLANBOX_VERSION}" == *-SNAPSHOT ]]' && wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS -O /tmp/maven-metadata.xml "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-api-manager/${XPLANBOX_VERSION}/maven-metadata.xml" || echo "NO-SNAPSHOT" \
+	&& bash -c '[[ "${XPLANBOX_VERSION}" == *-SNAPSHOT ]]' && FILE_VERSION=$(xmlstarlet sel -t -m "metadata/versioning/snapshotVersions" -c "./snapshotVersion[1]/value/text()" /tmp/maven-metadata.xml ) || echo "NO-SNAPSHOT" \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-api-manager.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-api-manager/${XPLANBOX_VERSION}/xplan-api-manager-${FILE_VERSION}.war" \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-api-validator.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-api-validator/${XPLANBOX_VERSION}/xplan-api-validator-${FILE_VERSION}.war" \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-benutzerhandbuch-html.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-benutzerhandbuch/${XPLANBOX_VERSION}/xplan-benutzerhandbuch-${FILE_VERSION}-html.zip" \
