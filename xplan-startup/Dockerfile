@@ -19,5 +19,13 @@ LABEL	org.opencontainers.image.title="Utilities - Startup" \
 
 ADD app.tar.gz /
 
+ARG JDBC_TESTER_URL=http://maven.werne.grit.de/artifactory/libs-release-local/de/grit/jdbc-tester/1.1/jdbc-tester-1.1-run.jar
+ARG JDBC_TESTER_SHA256=54cace05169d4b5bdfaa92cbfc5b53d85d6a8272ae87fb434894cab5e90a190b
+
+RUN echo "Downloading exernal components" \
+	&& wget --progress=dot:giga -O /app/jdbc-tester-run.jar "${JDBC_TESTER_URL}" \
+	&& echo "${JDBC_TESTER_SHA256} */app/jdbc-tester-run.jar" | sha256sum --strict --check \
+	&& echo "Done"
+
 ENTRYPOINT [ ]
 CMD [ "/app/wait-for-time.sh", "-s", "5", "--" ]
