@@ -7,36 +7,35 @@ stages:
 
 variables:
   REPO_BASE: docker.io/grit
-  BRANCH_LAST_PART: ${CI_COMMIT_BRANCH##*/}
-  IMAGE_TAG_SHORT: ${BRANCH_LAST_PART%%-*}
-  IMAGE_TAG_LONG: "${IMAGE_TAG_SHORT}-${CI_COMMIT_SHORT_SHA}-${CI_BUILD_ID}"
   CLI_PARAM_PRE: >-
     --build-arg DEE_REPO_USER=${DEE_REPO_USER}
     --build-arg DEE_REPO_PASS=${DEE_REPO_PASS}
-    --build-arg XPLANBOX_VERSION=${IMAGE_TAG_SHORT}
     --build-arg GIT_COMMIT=${CI_COMMIT_SHA} 
     --build-arg XPLANBOX_BUILD=${CI_JOB_STARTED_AT} 
-    --build-arg BUILD_TAG=${dockerTagLong}"
 
 build:
   stage: build
   before_script:
     - source $GRIT_PREPARE_DOCKER_HUB_SOURCE
+    - BRANCH_LAST_PART="${CI_COMMIT_BRANCH##*/}"
+    - IMAGE_TAG_SHORT="${BRANCH_LAST_PART%%-*}"
+    - IMAGE_TAG_LONG="${IMAGE_TAG_SHORT}-${CI_COMMIT_SHORT_SHA}-${CI_BUILD_ID}"
+    - CLI_BUILD_PARAM=$CLI_PARAM_PRE --build-arg XPLANBOX_VERSION=${IMAGE_TAG_SHORT} --build-arg BUILD_TAG=${IMAGE_TAG_LONG}"
     - set
   script:
     - echo "Building base images"
-    - docker build --pull -t xplan-base-tomcat:$IMAGE_TAG_LONG $CLI_PARAM_PRE xplan-base-tomcat
-    - docker build --pull -t xplan-buildpack-deps:$IMAGE_TAG_LONG $CLI_PARAM_PRE xplan-buildpack-deps
+    - docker build --pull -t xplan-base-tomcat:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-base-tomcat
+    - docker build --pull -t xplan-buildpack-deps:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-buildpack-deps
     - echo "Building images"
-    - docker build -t xplan-init:$IMAGE_TAG_LONG $CLI_PARAM_PRE xplan-init
-    - docker build -t xplan-api-docker:$IMAGE_TAG_LONG $CLI_PARAM_PRE  xplan-api-docker
-    - docker build -t xplan-db-docker:$IMAGE_TAG_LONG $CLI_PARAM_PRE  xplan-db-docker
-    - docker build -t xplan-db-inspireplu-docker:$IMAGE_TAG_LONG $CLI_PARAM_PRE  xplan-db-inspireplu-docker
-    - docker build -t xplan-manager-web-docker:$IMAGE_TAG_LONG $CLI_PARAM_PRE  xplan-manager-web-docker
-    - docker build -t xplan-services-docker:$IMAGE_TAG_LONG $CLI_PARAM_PRE  xplan-services-docker
-    - docker build -t xplan-services-inspireplu-docker:$IMAGE_TAG_LONG $CLI_PARAM_PRE  xplan-services-inspireplu-docker
-    - docker build -t xplan-validator-web-docker:$IMAGE_TAG_LONG $CLI_PARAM_PRE  xplan-validator-web-docker
-    - docker build -t xplan-startup:$IMAGE_TAG_LONG $CLI_PARAM_PRE  xplan-startup
+    - docker build -t xplan-init:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-init
+    - docker build -t xplan-api-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-api-docker
+    - docker build -t xplan-db-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-db-docker
+    - docker build -t xplan-db-inspireplu-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-db-inspireplu-docker
+    - docker build -t xplan-manager-web-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-manager-web-docker
+    - docker build -t xplan-services-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-services-docker
+    - docker build -t xplan-services-inspireplu-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-services-inspireplu-docker
+    - docker build -t xplan-validator-web-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-validator-web-docker
+    - docker build -t xplan-startup:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-startup
     - echo "Tag short name"
     - docker tag xplan-init:$IMAGE_TAG_LONG xplan-init:$IMAGE_TAG_SHORT
     - docker tag xplan-api-docker:$IMAGE_TAG_LONG xplan-api-docker:$IMAGE_TAG_SHORT
