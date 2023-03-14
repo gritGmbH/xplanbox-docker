@@ -26,7 +26,7 @@ build:
     - echo "Building base images"
     - docker build --pull -t xplan-base-tomcat:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-base-tomcat
     - docker build --pull -t xplan-buildpack-deps:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-buildpack-deps
-    - docker build --pull -t xplan-init:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-init
+    - docker build -t xplan-init:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-init
     - echo "Building images"
     - docker build -t $REPO_BASE/xplan-api-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-api-docker
     - docker build -t $REPO_BASE/xplan-db-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-db-docker
