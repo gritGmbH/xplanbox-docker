@@ -26,43 +26,45 @@ build:
     - echo "Building base images"
     - docker build --pull -t xplan-base-tomcat:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-base-tomcat
     - docker build --pull -t xplan-buildpack-deps:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-buildpack-deps
+    - docker build --pull -t xplan-init:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-init
     - echo "Building images"
-    - docker build -t xplan-init:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-init
-    - docker build -t xplan-api-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-api-docker
-    - docker build -t xplan-db-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-db-docker
-    - docker build -t xplan-db-inspireplu-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-db-inspireplu-docker
-    - docker build -t xplan-manager-web-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-manager-web-docker
-    - docker build -t xplan-services-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-services-docker
-    - docker build -t xplan-services-inspireplu-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-services-inspireplu-docker
-    - docker build -t xplan-validator-web-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-validator-web-docker
-    - docker build -t xplan-startup:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-startup
+    - docker build -t $REPO_BASE/xplan-api-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-api-docker
+    - docker build -t $REPO_BASE/xplan-db-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-db-docker
+    - docker build -t $REPO_BASE/xplan-db-inspireplu-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-db-inspireplu-docker
+    - docker build -t $REPO_BASE/xplan-manager-web-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-manager-web-docker
+    - docker build -t $REPO_BASE/xplan-services-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-services-docker
+    - docker build -t $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-services-inspireplu-docker
+    - docker build -t $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-validator-web-docker
+    - docker build -t $REPO_BASE/xplan-startup:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-startup
+    - echo "Also Prepare xplan-init for push"
+    - docker tag xplan-init:$IMAGE_TAG_LONG                                  $REPO_BASE/xplan-init:$IMAGE_TAG_LONG
     - echo "Tag short name"
-    - docker tag xplan-init:$IMAGE_TAG_LONG xplan-init:$IMAGE_TAG_SHORT
-    - docker tag xplan-api-docker:$IMAGE_TAG_LONG xplan-api-docker:$IMAGE_TAG_SHORT
-    - docker tag xplan-db-docker:$IMAGE_TAG_LONG xplan-db-docker:$IMAGE_TAG_SHORT
-    - docker tag xplan-db-inspireplu-docker:$IMAGE_TAG_LONG xplan-db-inspireplu-docker:$IMAGE_TAG_SHORT
-    - docker tag xplan-manager-web-docker:$IMAGE_TAG_LONG xplan-manager-web-docker:$IMAGE_TAG_SHORT
-    - docker tag xplan-services-docker:$IMAGE_TAG_LONG xplan-services-docker:$IMAGE_TAG_SHORT
-    - docker tag xplan-services-inspireplu-docker:$IMAGE_TAG_LONG xplan-services-inspireplu-docker:$IMAGE_TAG_SHORT
-    - docker tag xplan-validator-web-docker:$IMAGE_TAG_LONG xplan-validator-web-docker:$IMAGE_TAG_SHORT
-    - docker tag xplan-startup:$IMAGE_TAG_LONG xplan-startup:$IMAGE_TAG_SHORT
+    - docker tag $REPO_BASE/xplan-init:$IMAGE_TAG_LONG                       $REPO_BASE/xplan-init:$IMAGE_TAG_SHORT
+    - docker tag $REPO_BASE/xplan-api-docker:$IMAGE_TAG_LONG                 $REPO_BASE/xplan-api-docker:$IMAGE_TAG_SHORT
+    - docker tag $REPO_BASE/xplan-db-docker:$IMAGE_TAG_LONG                  $REPO_BASE/xplan-db-docker:$IMAGE_TAG_SHORT
+    - docker tag $REPO_BASE/xplan-db-inspireplu-docker:$IMAGE_TAG_LONG       $REPO_BASE/xplan-db-inspireplu-docker:$IMAGE_TAG_SHORT
+    - docker tag $REPO_BASE/xplan-manager-web-docker:$IMAGE_TAG_LONG         $REPO_BASE/xplan-manager-web-docker:$IMAGE_TAG_SHORT
+    - docker tag $REPO_BASE/xplan-services-docker:$IMAGE_TAG_LONG            $REPO_BASE/xplan-services-docker:$IMAGE_TAG_SHORT
+    - docker tag $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_LONG $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_SHORT
+    - docker tag $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_LONG       $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_SHORT
+    - docker tag $REPO_BASE/xplan-startup:$IMAGE_TAG_LONG                    $REPO_BASE/xplan-startup:$IMAGE_TAG_SHORT
     - echo "Push long names"
-    - docker push xplan-init:$IMAGE_TAG_LONG
-    - docker push xplan-api-docker:$IMAGE_TAG_LONG
-    - docker push xplan-db-docker:$IMAGE_TAG_LONG
-    - docker push xplan-db-inspireplu-docker:$IMAGE_TAG_LONG
-    - docker push xplan-manager-web-docker:$IMAGE_TAG_LONG
-    - docker push xplan-services-docker:$IMAGE_TAG_LONG
-    - docker push xplan-services-inspireplu-docker:$IMAGE_TAG_LONG
-    - docker push xplan-validator-web-docker:$IMAGE_TAG_LONG
-    - docker push xplan-startup:$IMAGE_TAG_LONG
+    - docker push $REPO_BASE/xplan-init:$IMAGE_TAG_LONG
+    - docker push $REPO_BASE/xplan-api-docker:$IMAGE_TAG_LONG
+    - docker push $REPO_BASE/xplan-db-docker:$IMAGE_TAG_LONG
+    - docker push $REPO_BASE/xplan-db-inspireplu-docker:$IMAGE_TAG_LONG
+    - docker push $REPO_BASE/xplan-manager-web-docker:$IMAGE_TAG_LONG
+    - docker push $REPO_BASE/xplan-services-docker:$IMAGE_TAG_LONG
+    - docker push $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_LONG
+    - docker push $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_LONG
+    - docker push $REPO_BASE/xplan-startup:$IMAGE_TAG_LONG
     - echo "Push short names"
-    - docker push xplan-init:$IMAGE_TAG_SHORT
-    - docker push xplan-api-docker:$IMAGE_TAG_SHORT
-    - docker push xplan-db-docker:$IMAGE_TAG_SHORT
-    - docker push xplan-db-inspireplu-docker:$IMAGE_TAG_SHORT
-    - docker push xplan-manager-web-docker:$IMAGE_TAG_SHORT
-    - docker push xplan-services-docker:$IMAGE_TAG_SHORT
-    - docker push xplan-services-inspireplu-docker:$IMAGE_TAG_SHORT
-    - docker push xplan-validator-web-docker:$IMAGE_TAG_SHORT
-    - docker push xplan-startup:$IMAGE_TAG_SHORT
+    - docker push $REPO_BASE/xplan-init:$IMAGE_TAG_SHORT
+    - docker push $REPO_BASE/xplan-api-docker:$IMAGE_TAG_SHORT
+    - docker push $REPO_BASE/xplan-db-docker:$IMAGE_TAG_SHORT
+    - docker push $REPO_BASE/xplan-db-inspireplu-docker:$IMAGE_TAG_SHORT
+    - docker push $REPO_BASE/xplan-manager-web-docker:$IMAGE_TAG_SHORT
+    - docker push $REPO_BASE/xplan-services-docker:$IMAGE_TAG_SHORT
+    - docker push $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_SHORT
+    - docker push $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_SHORT
+    - docker push $REPO_BASE/xplan-startup:$IMAGE_TAG_SHORT
