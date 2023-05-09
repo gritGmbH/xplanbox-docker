@@ -8,15 +8,7 @@ COPY patches /patches
 COPY conf /target/usr/local/tomcat/conf
 COPY --from=tomcat /usr/local/tomcat/conf/web.xml /target/usr/local/tomcat/conf/web.xml
 
-ARG FIX_BATIK_URL=https://maven.werne.grit.de/artifactory/repo1-cache/org/apache/xmlgraphics/batik-codec/1.14/batik-codec-1.14.jar
-ARG FIX_BATIK_SHA=f63ed1f18412cead069fa97b677fdbda43b6a1af
-
-RUN echo "Loadin batik-codec fix" \
-	&& mkdir /batik-fix \
-	&& wget --progress=dot:giga -O /batik-fix/batik-codec-1.14.jar "${FIX_BATIK_URL}" \
-	&& ( echo -n "${FIX_BATIK_SHA}  /batik-fix/batik-codec-1.14.jar\n" > /batik-fix/batik-codec-1.14.sha ) \
-	&& sha1sum -c /batik-fix/batik-codec-1.14.sha \
-	&& echo "Extract" \
+RUN echo "Extract" \
 	&& mkdir -p /target/usr/local/tomcat/webapps \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplan-validator-web /dist/xplan-validator-web.war \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplan-validator-wms /dist/xplan-validator-wms.war \
@@ -48,5 +40,7 @@ LABEL	org.opencontainers.image.title="xPlanBox Validator" \
 	org.opencontainers.image.revision="${GIT_COMMIT}"
 
 ENV JAVA_OPTS="-Xmx8192m -DXPLANBOX_CONFIG=/root/xplan-validator-config/"
+
+#TODO  -Dlog4j2.configurationFile=classpath:/log4j2.yaml
 
 COPY --from=builder /target /

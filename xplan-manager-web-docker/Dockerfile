@@ -8,9 +8,11 @@ RUN echo "Extract and Cleanup" \
 	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /dist/xplan-root-default.war \
 	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /dist/xplan-betriebshandbuch-html.zip \
 	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /dist/xplan-benutzerhandbuch-html.zip \
-	&& unzip -d /target/root/ /dist/xplan-transform-cli.zip \
-	&& unzip -d /target/root/ /dist/xplan-update-database-cli.zip \
 	&& unzip -d /target/root/ /dist/xplan-manager-cli.zip \
+	&& unzip -d /target/root/ /dist/xplan-transform-cli.zip \
+	&& unzip -d /target/root/ /dist/xplan-update-data-cli.zip \
+	&& unzip -d /target/root/ /dist/xplan-validatedb-cli.zip \
+	&& unzip -d /target/root/ /dist/xplan-evaluation-schema-synchronize-cli.zip \
 	&& unzip -d /target/ /hale-cli.zip \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan-manager-web/WEB-INF/lib /target/root/xplan-*/repo \
 	&& bash /update-logging.sh \
@@ -36,5 +38,7 @@ LABEL	org.opencontainers.image.title="xPlanBox Manager" \
 	org.opencontainers.image.revision="${GIT_COMMIT}"
 
 ENV JAVA_OPTS="-Xmx8192m -DXPLANBOX_CONFIG=/root/xplan-manager-config/"
+
+# TODO: -Dlog4j2.configurationFile=classpath:/log4j2.yaml
 
 COPY --from=builder /target /

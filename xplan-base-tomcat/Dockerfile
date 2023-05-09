@@ -4,7 +4,8 @@ FROM tomcat:9.0-jdk11-temurin-focal
 ENV LD_LIBRARY_PATH=/usr/lib/jni
 
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends libgdal-java proj-bin \
+	&& apt-get install -y --no-install-recommends libgdal-java proj-bin fontconfig \
+	&& apt clean \
 	&& rm -rf /var/lib/apt/lists/*
 
 # -DXPLANBOX_CONFIG=/home/xplanbox/.deegree/xplan-manager-config
@@ -12,3 +13,4 @@ RUN apt-get update \
 #
 ENV TZ=Europe/Berlin
 ENV CATALINA_OPTS="-Djts.overlay=ng -Djavax.xml.transform.TransformerFactory=net.sf.saxon.TransformerFactoryImpl"
+

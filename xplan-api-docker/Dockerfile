@@ -32,4 +32,6 @@ LABEL	org.opencontainers.image.title="xPlanBox API" \
 
 ENV JAVA_OPTS="-Xmx8192m -DXPLANBOX_CONFIG=/root/xplan-manager-config/"
 
+# TODO: -Dlog4j2.configurationFile=classpath:/log4j2.yaml
+
 COPY --from=builder /target /

@@ -18,7 +18,8 @@ RUN echo "Extract and Cleanup" \
 	&& mkdir -p /work/val-cfg  \
 	&& unzip -d /work/val-cfg /dist/xplan-validator-config.zip \
 	&& mkdir -p /work/val-ws  \
-	&& unzip -d /work/val-ws/xplan-validator-wms-workspace /dist/xplan-workspaces-xplan-validator-wms-workspace.zip \
+	&& unzip -d /work/val-ws/xplan-validator-wms-sql-workspace /dist/xplan-workspaces-xplan-validator-wms-sql-workspace.zip \
+	&& unzip -d /work/val-ws/xplan-validator-wms-memory-workspace /dist/xplan-workspaces-xplan-validator-wms-memory-workspace.zip \
 	&& mkdir -p /work/plu-ws  \
 	&& unzip -d /work/plu-ws/xplan-inspireplu-workspace /dist/xplan-workspaces-xplan-inspireplu-workspace.zip \
 	&& bash /config.sh \
