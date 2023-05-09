@@ -8,23 +8,12 @@ COPY patches /patches
 COPY conf /target/usr/local/tomcat/conf
 COPY --from=tomcat /usr/local/tomcat/conf/web.xml /target/usr/local/tomcat/conf/web.xml
 
-ARG FIX_BATIK_URL=https://maven.werne.grit.de/artifactory/repo1-cache/org/apache/xmlgraphics/batik-codec/1.14/batik-codec-1.14.jar
-ARG FIX_BATIK_SHA=f63ed1f18412cead069fa97b677fdbda43b6a1af
 
-RUN echo "Loadin batik-codec fix" \
-	&& mkdir /batik-fix \
-	&& wget --progress=dot:giga -O /batik-fix/batik-codec-1.14.jar "${FIX_BATIK_URL}" \
-	&& ( echo -n "${FIX_BATIK_SHA}  /batik-fix/batik-codec-1.14.jar\n" > /batik-fix/batik-codec-1.14.sha ) \
-	&& sha1sum -c /batik-fix/batik-codec-1.14.sha \
-	&& echo "Extract" \
+RUN echo "Extract" \
 	&& mkdir -p /target/usr/local/tomcat/webapps \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplan-wfs /dist/xplan-wfs.war \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplan-wms /dist/xplan-wms.war \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplansyn-wfs /dist/xplansyn-wfs.war \
-	&& echo "Apply batik-codec fix" \
-	&& cp -v /batik-fix/batik-codec-1.14.jar  /target/usr/local/tomcat/webapps/xplan-wfs/WEB-INF/lib/ \
-	&& cp -v /batik-fix/batik-codec-1.14.jar  /target/usr/local/tomcat/webapps/xplan-wms/WEB-INF/lib/ \
-	&& cp -v /batik-fix/batik-codec-1.14.jar  /target/usr/local/tomcat/webapps/xplansyn-wfs/WEB-INF/lib/ \
 	&& echo "Cleanup" \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan*/WEB-INF/lib \
 	&& patch -d /target -p1  </patches/web.xml.patch \
