@@ -39,9 +39,9 @@ build:
     - docker build --tag $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_LONG       $CLI_BUILD_PARAM xplan-validator-web-docker
     - docker build --tag $REPO_BASE/xplan-startup:$IMAGE_TAG_LONG                    $CLI_BUILD_PARAM xplan-startup
     - echo "Building images (no-cors)"
-    - docker build --file Dockerfile.no-cors --tag $REPO_BASE/xplan-services-docker:$IMAGE_TAG_NO_CORS_LONG            $CLI_BUILD_PARAM xplan-services-docker
-    - docker build --file Dockerfile.no-cors --tag $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_NO_CORS_LONG $CLI_BUILD_PARAM xplan-services-inspireplu-docker
-    - docker build --file Dockerfile.no-cors --tag $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_NO_CORS_LONG       $CLI_BUILD_PARAM xplan-validator-web-docker
+    - docker build --file xplan-services-docker/Dockerfile.no-cors            --tag $REPO_BASE/xplan-services-docker:$IMAGE_TAG_NO_CORS_LONG            $CLI_BUILD_PARAM xplan-services-docker
+    - docker build --file xplan-services-inspireplu-docker/Dockerfile.no-cors --tag $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_NO_CORS_LONG $CLI_BUILD_PARAM xplan-services-inspireplu-docker
+    - docker build --file xplan-validator-web-docker/Dockerfile.no-cors       --tag $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_NO_CORS_LONG       $CLI_BUILD_PARAM xplan-validator-web-docker
     - echo "Also Prepare xplan-init for push"
     - docker tag xplan-init:$IMAGE_TAG_LONG                                  $REPO_BASE/xplan-init:$IMAGE_TAG_LONG
     - echo "Tag short name"
