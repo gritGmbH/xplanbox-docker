@@ -10,9 +10,9 @@ VALCFG=/work/val-cfg
 mv "$WS/xplansyn-wms-workspace/gdal.ignore" "$WS/xplansyn-wms-workspace/gdal.xml"
 
 # validatorConfiguration.properties
-sed -ri "s/^(validatorWmsEndpoint)=([^\n]*)$/\1=\/xplan-validator-wms\/services\/wms/" "$MNGR/validatorConfiguration.properties"
+#7.x#sed -ri "s/^(validatorWmsEndpoint)=([^\n]*)$/\1=\/xplan-validator-wms\/services\/wms/" "$MNGR/validatorConfiguration.properties"
 sed -ri "s/^(validatorWmsEndpoint)=([^\n]*)$/\1=\/xplan-validator-wms\/services\/wms/" "$VALCFG/validatorConfiguration.properties"
-sed -ri "s/^(apiUrl)=([^\n]*)$/\1=/" "$MNGR/validatorApiConfiguration.properties"
+#7.x#sed -ri "s/^(apiUrl)=([^\n]*)$/\1=/" "$MNGR/validatorApiConfiguration.properties"
 sed -ri "s/^(apiUrl)=([^\n]*)$/\1=/" "$VALCFG/validatorApiConfiguration.properties"
 
 # managerApiConfiguration.properties

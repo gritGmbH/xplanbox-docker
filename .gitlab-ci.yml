@@ -18,10 +18,12 @@ build:
   before_script:
     - source $GRIT_PREPARE_DOCKER_HUB_SOURCE
     - BRANCH_LAST_PART="${CI_COMMIT_BRANCH##*/}"
-    - IMAGE_TAG_SHORT="${BRANCH_LAST_PART%%-*}-PRE"
+    - IMAGE_TAG_SHORT="${BRANCH_LAST_PART%%-*}"
     - IMAGE_TAG_LONG="${IMAGE_TAG_SHORT}-${CI_COMMIT_SHORT_SHA}-${CI_BUILD_ID}"
-    - IMAGE_TAG_NO_CORS_SHORT="${BRANCH_LAST_PART%%-*}-PRE-no-cors"
+    - IMAGE_TAG_NO_CORS_SHORT="${BRANCH_LAST_PART%%-*}-no-cors"
     - IMAGE_TAG_NO_CORS_LONG="${IMAGE_TAG_NO_CORS_SHORT}-${CI_COMMIT_SHORT_SHA}-${CI_BUILD_ID}"
+    - IMAGE_TAG_API_DOC_SHORT="${BRANCH_LAST_PART%%-*}-dokumente"
+    - IMAGE_TAG_API_DOC_LONG="${IMAGE_TAG_API_DOC_SHORT}-${CI_COMMIT_SHORT_SHA}-${CI_BUILD_ID}"
     - CLI_BUILD_PARAM="$CLI_PARAM_PRE --build-arg XPLANBOX_VERSION=${BRANCH_LAST_PART} --build-arg BUILD_TAG=${IMAGE_TAG_LONG}"
     - set
   script:
@@ -38,7 +40,8 @@ build:
     - docker build --tag $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-services-inspireplu-docker
     - docker build --tag $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_LONG       $CLI_BUILD_PARAM xplan-validator-web-docker
     - docker build --tag $REPO_BASE/xplan-startup:$IMAGE_TAG_LONG                    $CLI_BUILD_PARAM xplan-startup
-    - echo "Building images (no-cors)"
+    - echo "Building images (variants)"
+    - docker build --file xplan-api-docker/Dockerfile.dokumente               --tag $REPO_BASE/xplan-api-docker:$IMAGE_TAG_API_DOC_LONG                 $CLI_BUILD_PARAM xplan-api-docker
     - docker build --file xplan-services-docker/Dockerfile.no-cors            --tag $REPO_BASE/xplan-services-docker:$IMAGE_TAG_NO_CORS_LONG            $CLI_BUILD_PARAM xplan-services-docker
     - docker build --file xplan-services-inspireplu-docker/Dockerfile.no-cors --tag $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_NO_CORS_LONG $CLI_BUILD_PARAM xplan-services-inspireplu-docker
     - docker build --file xplan-validator-web-docker/Dockerfile.no-cors       --tag $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_NO_CORS_LONG       $CLI_BUILD_PARAM xplan-validator-web-docker
@@ -54,7 +57,8 @@ build:
     - docker tag $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_LONG $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_SHORT
     - docker tag $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_LONG       $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_SHORT
     - docker tag $REPO_BASE/xplan-startup:$IMAGE_TAG_LONG                    $REPO_BASE/xplan-startup:$IMAGE_TAG_SHORT
-    - echo "Tag short name (no-cors)"
+    - echo "Tag short name (variants)"
+    - docker tag $REPO_BASE/xplan-api-docker:$IMAGE_TAG_API_DOC_LONG                 $REPO_BASE/xplan-api-docker:$IMAGE_TAG_API_DOC_SHORT
     - docker tag $REPO_BASE/xplan-services-docker:$IMAGE_TAG_NO_CORS_LONG            $REPO_BASE/xplan-services-docker:$IMAGE_TAG_NO_CORS_SHORT
     - docker tag $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_NO_CORS_LONG $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_NO_CORS_SHORT
     - docker tag $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_NO_CORS_LONG       $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_NO_CORS_SHORT
@@ -68,7 +72,8 @@ build:
     - docker push $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_LONG
     - docker push $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_LONG
     - docker push $REPO_BASE/xplan-startup:$IMAGE_TAG_LONG
-    - echo "Push long names (no-cors)"
+    - echo "Push long names (variants)"
+    - docker push $REPO_BASE/xplan-api-docker:$IMAGE_TAG_API_DOC_LONG
     - docker push $REPO_BASE/xplan-services-docker:$IMAGE_TAG_NO_CORS_LONG
     - docker push $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_NO_CORS_LONG
     - docker push $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_NO_CORS_LONG
@@ -82,7 +87,8 @@ build:
     - docker push $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_SHORT
     - docker push $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_SHORT
     - docker push $REPO_BASE/xplan-startup:$IMAGE_TAG_SHORT
-    - echo "Push short names (no-cors)"
+    - echo "Push short names (variants)"
+    - docker push $REPO_BASE/xplan-api-docker:$IMAGE_TAG_API_DOC_SHORT
     - docker push $REPO_BASE/xplan-services-docker:$IMAGE_TAG_NO_CORS_SHORT
     - docker push $REPO_BASE/xplan-services-inspireplu-docker:$IMAGE_TAG_NO_CORS_SHORT
     - docker push $REPO_BASE/xplan-validator-web-docker:$IMAGE_TAG_NO_CORS_SHORT

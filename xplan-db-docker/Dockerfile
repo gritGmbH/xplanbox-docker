@@ -6,7 +6,7 @@ RUN echo "Extract files from template" \
     && mkdir /xplan-workspaces \
     && tar -xvzf /tpl/srv-ws.tgz -C /xplan-workspaces
 
-FROM postgis/postgis:12-3.2-alpine
+FROM postgis/postgis:14-3.4
 
 ARG XPLANBOX_BUILD
 ARG XPLANBOX_VERSION

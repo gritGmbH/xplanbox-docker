@@ -68,9 +68,11 @@ RUN echo "Downloading files from repo and extract it" \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-update-data-cli.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-update-data-cli/${XPLANBOX_VERSION}/xplan-update-data-cli-${FILE_VERSION}.zip" \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-validatedb-cli.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-validatedb-cli/${XPLANBOX_VERSION}/xplan-validatedb-cli-${FILE_VERSION}.zip" \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-evaluation-schema-synchronize-cli.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-evaluation-schema-synchronize-cli/${XPLANBOX_VERSION}/xplan-evaluation-schema-synchronize-cli-${FILE_VERSION}.zip" \
-	# API
+	# API \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-api-manager.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-api-manager/${XPLANBOX_VERSION}/xplan-api-manager-${FILE_VERSION}.war" \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-api-validator.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-api-validator/${XPLANBOX_VERSION}/xplan-api-validator-${FILE_VERSION}.war" \
+	# API new in 7.x \
+	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-api-dokumente.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-api-dokumente/${XPLANBOX_VERSION}/xplan-api-dokumente-${FILE_VERSION}.war" \
 	# Webapp \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-inspireplu.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-inspireplu/${XPLANBOX_VERSION}/xplan-inspireplu-${FILE_VERSION}.war" \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-manager-web.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-manager-web/${XPLANBOX_VERSION}/xplan-manager-web-${FILE_VERSION}.war" \
@@ -80,6 +82,8 @@ RUN echo "Downloading files from repo and extract it" \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-wfs.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-wfs/${XPLANBOX_VERSION}/xplan-wfs-${FILE_VERSION}.war" \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-wms.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-wms/${XPLANBOX_VERSION}/xplan-wms-${FILE_VERSION}.war" \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplansyn-wfs.war "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplansyn-wfs/${XPLANBOX_VERSION}/xplansyn-wfs-${FILE_VERSION}.war" \
+	# Config new in 7.x \
+	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-dokumenten-config.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-dokumenten-config/${XPLANBOX_VERSION}/xplan-dokumenten-config-${FILE_VERSION}.zip" \
 	# Config \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-manager-config-default.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-manager-config/${XPLANBOX_VERSION}/xplan-manager-config-${FILE_VERSION}-default.zip" \
 	&& wget --user=$DEE_REPO_USER --password=$DEE_REPO_PASS --progress=dot:giga -O /dist/xplan-validator-config.zip "${DEE_REPO_URL}/de/latlon/product/xplanbox/xplan-validator-config/${XPLANBOX_VERSION}/xplan-validator-config-${FILE_VERSION}.zip" \

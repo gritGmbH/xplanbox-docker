@@ -6,7 +6,7 @@ RUN echo "Extract files from template" \
     && mkdir /xplan-workspaces \
     && tar -xvzf /tpl/srv-ws.tgz -C /xplan-workspaces
 
-FROM postgis/postgis:12-2.5-alpine
+FROM postgis/postgis:14-3.4
 
 ARG XPLANBOX_BUILD
 ARG XPLANBOX_VERSION
@@ -26,5 +26,5 @@ ENV POSTGRES_INITDB_ARGS=--encoding=UTF8
 ENV POSTGRES_DB=inspireplu
 
 COPY --from=builder /xplan-workspaces/xplan-manager-workspace/sql /xplan-db-sql
-RUN ln -s /xplan-db-sql/inspireplu/04_create_inspireplu_schema.sql /docker-entrypoint-initdb.d/14_create_inspireplu_schema.sql \
-	&& ln -s /xplan-db-sql/inspireplu/05_create_inspireplu_view.sql /docker-entrypoint-initdb.d/15_create_inspireplu_view.sql
+RUN ln -s /xplan-db-sql/inspireplu/01_create_inspireplu_schema.sql /docker-entrypoint-initdb.d/14_create_inspireplu_schema.sql \
+	&& ln -s /xplan-db-sql/inspireplu/02_create_inspireplu_view.sql /docker-entrypoint-initdb.d/15_create_inspireplu_view.sql
