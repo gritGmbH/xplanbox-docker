@@ -17,6 +17,8 @@ build:
   stage: build
   before_script:
     - source $GRIT_PREPARE_DOCKER_HUB_SOURCE
+    - echo "Docker Content Trust (DCT) is disabled for this Build (DOCKER_CONTENT_TRUST=0)"
+    - export DOCKER_CONTENT_TRUST=0
     - BRANCH_LAST_PART="${CI_COMMIT_BRANCH##*/}"
     - IMAGE_TAG_SHORT="${BRANCH_LAST_PART%%-*}"
     - IMAGE_TAG_LONG="${IMAGE_TAG_SHORT}-${CI_COMMIT_SHORT_SHA}-${CI_BUILD_ID}"
