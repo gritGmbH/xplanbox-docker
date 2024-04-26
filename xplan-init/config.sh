@@ -57,4 +57,9 @@ do
     sed -i 's/<!--\s*\(<[^"]*"mapserver"\s*>[^>]*>\)\s*-->/\1/' $i
 done
 
+# 7.1.3 fix missing schema files
+for i in $PLUSRV/xplan-inspireplu-workspace/appschemas/inspireplu/*/
+do
+    test -d "$WS/xplan-manager-workspace/appschemas/inspireplu/$(basename $i)" || cp -r $i "$WS/xplan-manager-workspace/appschemas/inspireplu/"
+done
 # EoF

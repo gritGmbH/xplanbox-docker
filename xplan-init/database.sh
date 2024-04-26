@@ -26,7 +26,7 @@ PLUDB_CON_IDLE=${PLUDB_CON_IDLE:-1}
 PLUDB_CON_MAX=${PLUDB_CON_MAX:-10}
 
 # service connection
-for i in $WS/*/jdbc/xplan.xml $WS/*/jdbc/vfdb.xml
+for i in $WS/*/jdbc/xplan*.xml $WS/*/jdbc/vfdb.xml
 do
     test -e "$i" || continue
     echo "modify $i"
@@ -41,7 +41,7 @@ do
 done
 
 # plu connection
-for i in $PLUSRV/*/jdbc/*.xml  $WS/*/jdbc/inspireplu.xml
+for i in $PLUSRV/*/jdbc/*.xml  $WS/*/jdbc/inspireplu*.xml
 do
     test -e "$i" || continue
     echo "modify $i"
