@@ -43,8 +43,6 @@ RUN echo "Downloading exernal components" \
 
 ARG DEE_REPO_USER
 ARG DEE_REPO_PASS
-#ARG DEE_REPO_URL=http://buildserver.deegree-enterprise.de/nexus/service/local/repositories/dee-distribution-releases/content
-#ARG DEE_REPO_URL=http://maven.werne.grit.de/artifactory/ext-release-local
 ARG DEE_REPO_URL=http://maven.werne.grit.de/artifactory/xplanbox-repos
 ARG XPLANBOX_VERSION
 
