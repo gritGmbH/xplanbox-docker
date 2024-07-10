@@ -1,0 +1,19 @@
+--- /usr/local/tomcat/conf/web.xml.orig	2021-03-04 22:54:03.000000000 +0100
++++ /usr/local/tomcat/conf/web.xml	2021-03-23 16:14:59.120000000 +0100
+@@ -625,6 +625,16 @@
+     </filter-mapping>
+ -->
+ 
++  <!-- Add CORS Filter as described in
++       https://tomcat.apache.org/tomcat-9.0-doc/config/filter.html#CORS_Filter -->
++    <filter>
++        <filter-name>CorsFilter</filter-name>
++        <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
++    </filter>
++    <filter-mapping>
++        <filter-name>CorsFilter</filter-name>
++        <url-pattern>/*</url-pattern>
++    </filter-mapping>
+ 
+   <!-- ==================== Default Session Configuration ================= -->
+   <!-- You can set the default session timeout (in minutes) for all newly   -->
