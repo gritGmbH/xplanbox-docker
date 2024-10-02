@@ -4,8 +4,8 @@ FROM xplan-buildpack-deps:${BUILD_TAG} AS builder
 
 RUN echo "Extract and Cleanup" \
 	&& mkdir -p /target/usr/local/tomcat/webapps \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplan-api-manager /dist/xplan-api-manager.war \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplan-api-validator /dist/xplan-api-validator.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplan-manager-api /dist/xplan-manager-api.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplan-validator-api /dist/xplan-validator-api.war \
 	&& unzip -d /target/ /hale-cli.zip \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan*/WEB-INF/lib \
 	&& bash /update-logging.sh \

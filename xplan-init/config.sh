@@ -17,7 +17,7 @@ sed -ri "s/^(apiUrl)=([^\n]*)$/\1=/" "$VALCFG/validatorApiConfiguration.properti
 
 # managerApiConfiguration.properties
 sed -ri "s/^(wmsUrl)=([^\n]*)$/\1=\/xplan-wms\/services/" "$MNGR/managerApiConfiguration.properties"
-sed -ri "s/^(apiUrl)=([^\n]*)$/\1=\/xplan-api-manager/" "$MNGR/managerApiConfiguration.properties"
+sed -ri "s/^(apiUrl)=([^\n]*)$/\1=\/xplan-manager-api/" "$MNGR/managerApiConfiguration.properties"
 
 # managerWebConfiguration.properties
 sed -ri "s/^(activatePublishingInspirePlu)=([^\n]*)$/\1=true/" "$MNGR/managerWebConfiguration.properties"

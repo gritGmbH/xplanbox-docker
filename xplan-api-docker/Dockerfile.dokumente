@@ -4,7 +4,7 @@ FROM xplan-buildpack-deps:${BUILD_TAG} AS builder
 
 RUN echo "Extract and Cleanup" \
 	&& mkdir -p /target/usr/local/tomcat/webapps \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplan-api-dokumente /dist/xplan-api-dokumente.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplan-dokumente-api /dist/xplan-dokumente-api.war \
 	&& bash /update-logging.sh \
 	&& echo "Done"
 
