@@ -25,10 +25,13 @@ docker run -it --rm -e POSTGRES_DB=xplanbox -e POSTGRES_USER=postgres -e POSTGRE
 ```
 
 ```bash
+# local cache
+#export DEE_REPO_URL=http://host.docker.internal:9980/artifactory/xplanbox-repos
+
 export DEE_REPO_USER=user
 export DEE_REPO_PASS=pass
 export DEE_REPO_URL=https://maven.werne.grit.de/artifactory/xplanbox-repos
-export XPLANBOX_VERSION=7.1.3
+export XPLANBOX_VERSION=7.2.2
 export BUILD_SUFFIX=
 export BUILD_TAG=${XPLANBOX_VERSION}${BUILD_SUFFIX}
 
