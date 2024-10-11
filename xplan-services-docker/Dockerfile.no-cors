@@ -9,9 +9,9 @@ COPY --from=tomcat /usr/local/tomcat/conf/web.xml /target/usr/local/tomcat/conf/
 
 RUN echo "Extract" \
 	&& mkdir -p /target/usr/local/tomcat/webapps \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplan-wfs /dist/xplan-wfs.war \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplan-wms /dist/xplan-wms.war \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplansyn-wfs /dist/xplansyn-wfs.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplan-services-wms /dist/xplan-services-wms.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplan-services-wfs /dist/xplan-services-wfs.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplan-services-wfs-syn /dist/xplan-services-wfs-syn.war \
 	&& echo "Cleanup" \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan*/WEB-INF/lib \
 	&& bash /update-logging.sh \

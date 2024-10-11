@@ -5,14 +5,10 @@ FROM xplan-buildpack-deps:${BUILD_TAG} AS builder
 RUN echo "Extract and Cleanup" \
 	&& mkdir -p /target/usr/local/tomcat/webapps /target/root \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplan-manager-web /dist/xplan-manager-web.war \
-	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /dist/xplan-root-default.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /dist/xplan-webpages-default.war \
 	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /dist/xplan-betriebshandbuch-html.zip \
-	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /dist/xplan-benutzerhandbuch-html.zip \
-	&& unzip -d /target/root/ /dist/xplan-manager-cli.zip \
-	&& unzip -d /target/root/ /dist/xplan-transform-cli.zip \
-	&& unzip -d /target/root/ /dist/xplan-update-data-cli.zip \
-	&& unzip -d /target/root/ /dist/xplan-validatedb-cli.zip \
-	&& unzip -d /target/root/ /dist/xplan-evaluation-schema-synchronize-cli.zip \
+	&& unzip -d /target/usr/local/tomcat/webapps/ROOT /dist/xplan-benutzerhandbuch-pdf.zip \
+	&& unzip -d /target/root/ /dist/xplan-cli-tools.zip \
 	&& unzip -d /target/ /hale-cli.zip \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan-manager-web/WEB-INF/lib /target/root/xplan-*/repo \
 	&& bash /update-logging.sh \

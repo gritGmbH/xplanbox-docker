@@ -11,7 +11,7 @@ COPY --from=tomcat /usr/local/tomcat/conf/web.xml /target/usr/local/tomcat/conf/
 RUN echo "Extract" \
 	&& mkdir -p /target/usr/local/tomcat/webapps \
 	&& unzip -d /target/usr/local/tomcat/webapps/xplan-validator-web /dist/xplan-validator-web.war \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplan-validator-wms /dist/xplan-validator-wms.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplan-webservices-validator-wms /dist/xplan-webservices-validator-wms.war \
 	&& echo "Cleanup" \
 	&& bash /linker.sh /target/usr/local/tomcat/webapps/xplan*/WEB-INF/lib \
 	&& patch -d /target -p1  </patches/web.xml.patch \

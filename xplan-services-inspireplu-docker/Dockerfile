@@ -10,7 +10,7 @@ COPY --from=tomcat /usr/local/tomcat/conf/web.xml /target/usr/local/tomcat/conf/
 
 RUN echo "Extract" \
 	&& mkdir -p /target/usr/local/tomcat/webapps \
-	&& unzip -d /target/usr/local/tomcat/webapps/xplan-inspireplu /dist/xplan-inspireplu.war \
+	&& unzip -d /target/usr/local/tomcat/webapps/xplan-webservices-inspireplu /dist/xplan-webservices-inspireplu.war \
 	&& echo "Cleanup" \
 	&& patch -d /target -p1  </patches/web.xml.patch \
 	&& bash /update-logging.sh \

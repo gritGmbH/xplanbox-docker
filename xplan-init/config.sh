@@ -7,7 +7,7 @@ MNGR=/work/mng-cfg
 PLUSRV=/work/plu-ws
 VALCFG=/work/val-cfg
 
-mv "$WS/xplansyn-wms-workspace/gdal.ignore" "$WS/xplansyn-wms-workspace/gdal.xml"
+mv "$WS/xplan-services-wms-workspace/gdal.ignore" "$WS/xplan-services-wms-workspace/gdal.xml"
 
 # validatorConfiguration.properties
 #7.x#sed -ri "s/^(validatorWmsEndpoint)=([^\n]*)$/\1=\/xplan-validator-wms\/services\/wms/" "$MNGR/validatorConfiguration.properties"
@@ -43,10 +43,10 @@ done
 # mapserver
 sed -ri "s/^(rasterConfigurationType)=([^\n]*)$/\1=mapserver/" "$MNGR/managerConfiguration.properties"
 
-mv $WS/xplansyn-wms-workspace/layers/mapserver.ignore $WS/xplansyn-wms-workspace/layers/mapserver.xml
-mv $WS/xplansyn-wms-workspace/datasources/remoteows/mapserver.ignore $WS/xplansyn-wms-workspace/datasources/remoteows/mapserver.xml
+mv $WS/xplan-services-wms-workspace/layers/mapserver.ignore $WS/xplan-services-wms-workspace/layers/mapserver.xml
+mv $WS/xplan-services-wms-workspace/datasources/remoteows/mapserver.ignore $WS/xplan-services-wms-workspace/datasources/remoteows/mapserver.xml
 
-sed -i 's/http:\/\/localhost:8080\/mapserver/http:\/\/mapserver:8080\/services/' $WS/xplansyn-wms-workspace/datasources/remoteows/mapserver.*
+sed -i 's/http:\/\/localhost:8080\/mapserver/http:\/\/mapserver:8080\/services/' $WS/xplan-services-wms-workspace/datasources/remoteows/mapserver.*
 
 # enable mapserver references
 for i in  $WS/*/themes/*raster.xml
@@ -58,8 +58,8 @@ do
 done
 
 # 7.1.3 fix missing schema files
-for i in $PLUSRV/xplan-inspireplu-workspace/appschemas/inspireplu/*/
-do
-    test -d "$WS/xplan-manager-workspace/appschemas/inspireplu/$(basename $i)" || cp -r $i "$WS/xplan-manager-workspace/appschemas/inspireplu/"
-done
+#for i in $PLUSRV/xplan-inspireplu-workspace/appschemas/inspireplu/*/
+#do
+#    test -d "$WS/xplan-manager-workspace/appschemas/inspireplu/$(basename $i)" || cp -r $i "$WS/xplan-manager-workspace/appschemas/inspireplu/"
+#done
 # EoF
