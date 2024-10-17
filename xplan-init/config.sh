@@ -7,7 +7,8 @@ MNGR=/work/mng-cfg
 PLUSRV=/work/plu-ws
 VALCFG=/work/val-cfg
 
-mv "$WS/xplan-services-wms-workspace/gdal.ignore" "$WS/xplan-services-wms-workspace/gdal.xml"
+# Use of Mapserver no gdal used
+#mv "$WS/xplan-services-wms-workspace/gdal.ignore" "$WS/xplan-services-wms-workspace/gdal.xml"
 
 # validatorConfiguration.properties
 #7.x#sed -ri "s/^(validatorWmsEndpoint)=([^\n]*)$/\1=\/xplan-validator-wms\/services\/wms/" "$MNGR/validatorConfiguration.properties"
@@ -16,19 +17,19 @@ sed -ri "s/^(validatorWmsEndpoint)=([^\n]*)$/\1=\/xplan-validator-wms\/services\
 sed -ri "s/^(apiUrl)=([^\n]*)$/\1=/" "$VALCFG/validatorApiConfiguration.properties"
 
 # managerApiConfiguration.properties
-sed -ri "s/^(wmsUrl)=([^\n]*)$/\1=\/xplan-wms\/services/" "$MNGR/managerApiConfiguration.properties"
+sed -ri "s/^(wmsUrl)=([^\n]*)$/\1=\/xplan-services-wms\/services/" "$MNGR/managerApiConfiguration.properties"
 sed -ri "s/^(apiUrl)=([^\n]*)$/\1=\/xplan-manager-api/" "$MNGR/managerApiConfiguration.properties"
 
 # managerWebConfiguration.properties
 sed -ri "s/^(activatePublishingInspirePlu)=([^\n]*)$/\1=true/" "$MNGR/managerWebConfiguration.properties"
-sed -ri "s/^(wmsUrl)=([^\n]*)$/\1=\/xplan-wms\/services/" "$MNGR/managerWebConfiguration.properties"
+sed -ri "s/^(wmsUrl)=([^\n]*)$/\1=\/xplan-services-wms\/services/" "$MNGR/managerWebConfiguration.properties"
 sed -ri "s/^(basemapUrl)=([^\n]*)$/\1=http:\/\/sgx.geodatenzentrum.de\/wms_topplus_open\?/" "$MNGR/managerWebConfiguration.properties"
 sed -ri "s/^(basemapLayer)=([^\n]*)$/\1=web_grau/" "$MNGR/managerWebConfiguration.properties"
 
 # managerConfiguration.properties
 #sed -ri "s/^(rasterConfigurationType)=([^\n]*)$/\1=gdal/" "$MNGR/managerConfiguration.properties"
 
-sed -i 's/workspaceReloadUrls=/workspaceReloadUrls=http:\/\/xplan-services:8080\/xplan-wms\//' "$MNGR/managerConfiguration.properties"
+sed -i 's/workspaceReloadUrls=/workspaceReloadUrls=http:\/\/xplan-services:8080\/xplan-services-wms\//' "$MNGR/managerConfiguration.properties"
 sed -i 's/workspaceReloadUser=/workspaceReloadUser=deegree/' "$MNGR/managerConfiguration.properties"
 sed -i 's/workspaceReloadPassword=/workspaceReloadPassword=deegree/' "$MNGR/managerConfiguration.properties"
 
