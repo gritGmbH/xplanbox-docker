@@ -11,9 +11,7 @@ VALCFG=/work/val-cfg
 #mv "$WS/xplan-services-wms-workspace/gdal.ignore" "$WS/xplan-services-wms-workspace/gdal.xml"
 
 # validatorConfiguration.properties
-#7.x#sed -ri "s/^(validatorWmsEndpoint)=([^\n]*)$/\1=\/xplan-validator-wms\/services\/wms/" "$MNGR/validatorConfiguration.properties"
-sed -ri "s/^(validatorWmsEndpoint)=([^\n]*)$/\1=\/xplan-validator-wms\/services\/wms/" "$VALCFG/validatorConfiguration.properties"
-#7.x#sed -ri "s/^(apiUrl)=([^\n]*)$/\1=/" "$MNGR/validatorApiConfiguration.properties"
+sed -ri "s/^(validatorWmsEndpoint)=([^\n]*)$/\1=\/xplan-webservices-validator-wms\/services\/wms/" "$VALCFG/validatorConfiguration.properties"
 sed -ri "s/^(apiUrl)=([^\n]*)$/\1=/" "$VALCFG/validatorApiConfiguration.properties"
 
 # managerApiConfiguration.properties
