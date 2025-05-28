@@ -1,3 +1,6 @@
+# Source: https://raw.githubusercontent.com/docker-library/tomcat/a280a462a08befda350fb6729b8dd6ebaf9ced85/9.0/jdk11/temurin-focal/Dockerfile
+# Repository: https://github.com/docker-library/tomcat
+# Licence: Apache-2.0 license (https://github.com/docker-library/tomcat/blob/7bfd2b8f99a60b08403a61b8a9c82cf54d92575a/LICENSE)
 #
 # NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
 #

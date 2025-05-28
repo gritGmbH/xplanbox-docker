@@ -10,6 +10,11 @@ GNU Affero General Public License Version 3
 	Source:  https://github.com/vishnubob/wait-for-it
 	License: The MIT License (MIT)
 
+/upstream-tomcat/Dockerfile
+   Source:     https://raw.githubusercontent.com/docker-library/tomcat/a280a462a08befda350fb6729b8dd6ebaf9ced85/9.0/jdk11/temurin-focal/Dockerfile
+   Repository: https://github.com/docker-library/tomcat
+   Licence:    Apache-2.0 license
+
 ## Development setup for Docker Desktop (Windows)
 
 Prepare nginx ingress with:
