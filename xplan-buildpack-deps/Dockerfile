@@ -2,7 +2,7 @@
 ARG BUILD_TAG=undefined
 FROM upstream-tomcat:${BUILD_TAG} AS tomcat
 
-FROM buildpack-deps:stable-curl
+FROM docker.io/library/buildpack-deps:stable-curl
 
 COPY --from=tomcat /usr/local/tomcat/conf/server.xml /target/usr/local/tomcat/conf/server.xml
 

@@ -31,9 +31,11 @@ build:
   script:
     - echo "Building upstream tomcat version"
     - docker build --pull -t upstream-tomcat:$IMAGE_TAG_LONG $CLI_BUILD_PARAM upstream-tomcat
+    - echo "Explicit pull images (for base images)"
+    - docker pull docker.io/library/buildpack-deps:stable-curl
     - echo "Building base images"
     - docker build -t xplan-base-tomcat:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-base-tomcat
-    - docker build --pull -t xplan-buildpack-deps:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-buildpack-deps
+    - docker build -t xplan-buildpack-deps:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-buildpack-deps
     - docker build --tag xplan-init:$IMAGE_TAG_LONG $CLI_BUILD_PARAM xplan-init
     - echo "Building images"
     - docker build --tag $REPO_BASE/xplan-api-docker:$IMAGE_TAG_LONG                 $CLI_BUILD_PARAM xplan-api-docker
