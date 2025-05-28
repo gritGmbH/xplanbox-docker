@@ -1,5 +1,7 @@
 # NOTE: Ubuntu Focal 20.04 LTS required for gdal 3.0 dependency
-FROM tomcat:9.0-jdk11-temurin-focal
+#FROM tomcat:9.0-jdk11-temurin-focal
+ARG BUILD_TAG=undefined
+FROM upstream-tomcat:${BUILD_TAG}
 
 ENV LD_LIBRARY_PATH=/usr/lib/jni
 
