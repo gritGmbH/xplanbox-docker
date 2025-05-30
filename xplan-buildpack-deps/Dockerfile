@@ -27,6 +27,12 @@ RUN	set -eux \
 		-i "/Server/Service/Connector[@port='8443']" -t 'attr' -n 'secure' -v 'true' \
 		-i "/Server/Service/Connector[@port='8443']" -t 'attr' -n 'scheme' -v 'https' \
 		/target/usr/local/tomcat/conf/server.xml \
+	&& xmlstarlet ed -L -s "/Server/Service/Engine/Host" -t 'elem' -n 'ValveREPORT' -v '' \
+		-i "/Server/Service/Engine/Host/ValveREPORT" -t 'attr' -n 'className' -v 'org.apache.catalina.valves.ErrorReportValve' \
+		-i "/Server/Service/Engine/Host/ValveREPORT" -t 'attr' -n 'showReport' -v 'false' \
+		-i "/Server/Service/Engine/Host/ValveREPORT" -t 'attr' -n 'showServerInfo' -v 'false' \
+		-r "/Server/Service/Engine/Host/ValveREPORT" -v "Valve" \
+		/target/usr/local/tomcat/conf/server.xml \
 	&& xmlstarlet ed -L -d "/Server/Service/Engine/Host/Valve[@className='org.apache.catalina.valves.AccessLogValve']" /target/usr/local/tomcat/conf/server.xml
 
 ARG HALE_CLI_URL=https://github.com/halestudio/hale-cli/releases/download/v3.4.0/hale-cli-3.4.0.zip
