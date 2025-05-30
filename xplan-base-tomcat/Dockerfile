@@ -10,6 +10,7 @@ RUN apt-get update \
 	&& apt clean \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& sed -z -i 's|<Valve [^>]*/>||g' /usr/local/tomcat/conf/server.xml \
+	&& sed -z -i 's|\(</Host[^>]*>\)|  <Valve className="org.apache.catalina.valves.ErrorReportValve" showReport="false" showServerInfo="false"/>\n      \1|g' /usr/local/tomcat/conf/server.xml \
 	&& echo "handlers = java.util.logging.ConsoleHandler\n\
 .handlers =  java.util.logging.ConsoleHandler\n\
 \n\
